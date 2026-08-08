@@ -19,8 +19,8 @@ const contactCards = [
   },
   {
     title: "Call Us",
-    description: "+1 (555) 123-4567",
-    descriptionAlt: "+1 (555) 123-4567",
+    description: "+91 93598 05818",
+    descriptionAlt: "",
     icon: callIcon,
   },
   {

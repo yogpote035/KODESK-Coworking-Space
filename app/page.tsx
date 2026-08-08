@@ -419,143 +419,143 @@ export default function Home() {
       </section>
 
       {/* ── About ── */}
-       {/* About Section */}
+      {/* About Section */}
 
-<section data-animate className="bg-[#f3f3f3] py-16 sm:py-20 lg:py-24">
-  <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <section data-animate className="bg-[#f3f3f3] py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
-    <div data-fade className="text-center">
-      <h2 className="text-3xl font-medium text-black sm:text-4xl lg:text-[42px]">About</h2>
-      <p className="mt-3 text-base text-black/70">A new standard for the workday.</p>
-    </div>
+          <div data-fade className="text-center">
+            <h2 className="text-3xl font-medium text-black sm:text-4xl lg:text-[42px]">About</h2>
+            <p className="mt-3 text-base text-black/70">A new standard for the workday.</p>
+          </div>
 
-    <div className="mt-12 grid items-center gap-14 sm:mt-16 lg:grid-cols-2">
+          <div className="mt-12 grid items-center gap-14 sm:mt-16 lg:grid-cols-2">
 
-      {/* Left */}
+            {/* Left */}
 
-      <div>
+            <div>
 
-        <h3 data-fade className="max-w-[620px] text-2xl font-medium leading-[1.2] text-black sm:text-3xl lg:text-[40px]">
-          Premium Coworking Spaces for Modern Professionals
-        </h3>
+              <h3 data-fade className="max-w-[620px] text-2xl font-medium leading-[1.2] text-black sm:text-3xl lg:text-[40px]">
+                Premium Coworking Spaces for Modern Professionals
+              </h3>
 
-        <p data-fade className="mt-6 max-w-[620px] text-base leading-8 text-black/75 sm:mt-8">
-          At Kodesk, we're redefining the workspace experience. Our premium coworking spaces combine cutting-edge design, world-class amenities, and a vibrant community to create the perfect environment for innovation and growth.
-        </p>
+              <p data-fade className="mt-6 max-w-[620px] text-base leading-8 text-black/75 sm:mt-8">
+                At Kodesk, we're redefining the workspace experience. Our premium coworking spaces combine cutting-edge design, world-class amenities, and a vibrant community to create the perfect environment for innovation and growth.
+              </p>
 
 
-        <div className="mt-10 space-y-5">
+              <div className="mt-10 space-y-5">
 
-          {[
-            "Prime locations in business districts",
-            "24/7 secure access",
-            "High-speed fiber internet",
-            "Professional community",
-            "Flexible membership plans",
-            "Modern amenities"
-          ].map((item) => (
+                {[
+                  "Prime locations in business districts",
+                  "24/7 secure access",
+                  "High-speed fiber internet",
+                  "Professional community",
+                  "Flexible membership plans",
+                  "Modern amenities"
+                ].map((item) => (
 
-            <div key={item} data-fade className="flex items-center gap-4">
+                  <div key={item} data-fade className="flex items-center gap-4">
 
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#ff8426]">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#ff8426]">
 
-                <svg className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+                      <svg className="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+
+                    </div>
+
+                    <span className="text-[18px] text-black/85">
+                      {item}
+                    </span>
+
+                  </div>
+
+                ))}
 
               </div>
 
-              <span className="text-[18px] text-black/85">
-                {item}
-              </span>
-
-            </div>
-
-          ))}
-
-        </div>
 
 
-
-        <Link
-          href="/about"
-          data-fade
-          className="mt-12 inline-flex items-center rounded-md bg-[#13204b] px-9 py-4 text-[17px] text-white transition hover:bg-[#20316c]"
-        >
-          Learn More About Us
-        </Link>
-
-      </div>
-
-
-
-      {/* Right */}
-
-      <div className="flex justify-center lg:justify-end">
-
-        <div className="relative w-full max-w-[540px]">
-
-          <Image
-            src={aboutheroImage}
-            alt=""
-            width={540}
-            height={640}
-            sizes="(max-width: 1024px) 100vw, 540px"
-            data-fade
-            className="h-auto w-full rounded-[10px] object-cover"
-          />
-
-
-          {/* Stats */}
-
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:mx-auto sm:max-w-md lg:mt-0 lg:max-w-none lg:grid-cols-1 lg:gap-[18px] lg:absolute lg:-left-40 lg:top-[285px]">
-
-
-            <div data-fade className="rounded-[10px] bg-gradient-to-r from-[#2147FF] to-[#F47A2A] px-6 py-5 shadow-xl sm:px-8 lg:w-[220px]">
-
-              <h3
-                data-count="8"
-                data-suffix="+"
-                data-pad="2"
-                className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
+              <Link
+                href="/about"
+                data-fade
+                className="mt-12 inline-flex items-center rounded-md bg-[#13204b] px-9 py-4 text-[17px] text-white transition hover:bg-[#20316c]"
               >
-                08+
-              </h3>
-
-              <p className="mt-1 text-base text-white sm:text-[17px]">
-                Years Experienced
-              </p>
+                Learn More About Us
+              </Link>
 
             </div>
 
 
 
-            <div data-fade className="rounded-[10px] bg-gradient-to-r from-[#2147FF] to-[#F47A2A] px-6 py-5 shadow-xl sm:px-8 lg:ml-20 lg:w-[220px]">
+            {/* Right */}
 
-              <h3
-                data-count="145"
-                className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
-              >
-                145
-              </h3>
+            <div className="flex justify-center lg:justify-end">
 
-              <p className="mt-1 text-base text-white sm:text-[17px]">
-                Companies Working
-              </p>
+              <div className="relative w-full max-w-[540px]">
+
+                <Image
+                  src={aboutheroImage}
+                  alt=""
+                  width={540}
+                  height={640}
+                  sizes="(max-width: 1024px) 100vw, 540px"
+                  data-fade
+                  className="h-auto w-full rounded-[10px] object-cover"
+                />
+
+
+                {/* Stats */}
+
+                <div className="mt-6 grid grid-cols-2 gap-4 sm:mx-auto sm:max-w-md lg:mt-0 lg:max-w-none lg:grid-cols-1 lg:gap-[18px] lg:absolute lg:-left-40 lg:top-[285px]">
+
+
+                  <div data-fade className="rounded-[10px] bg-gradient-to-r from-[#2147FF] to-[#F47A2A] px-6 py-5 shadow-xl sm:px-8 lg:w-[220px]">
+
+                    <h3
+                      data-count="8"
+                      data-suffix="+"
+                      data-pad="2"
+                      className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
+                    >
+                      08+
+                    </h3>
+
+                    <p className="mt-1 text-base text-white sm:text-[17px]">
+                      Years Experienced
+                    </p>
+
+                  </div>
+
+
+
+                  <div data-fade className="rounded-[10px] bg-gradient-to-r from-[#2147FF] to-[#F47A2A] px-6 py-5 shadow-xl sm:px-8 lg:ml-20 lg:w-[220px]">
+
+                    <h3
+                      data-count="145"
+                      className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
+                    >
+                      145
+                    </h3>
+
+                    <p className="mt-1 text-base text-white sm:text-[17px]">
+                      Companies Working
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+              </div>
 
             </div>
 
           </div>
 
-
         </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
+      </section>
 
       {/* ── Our Spaces (Gallery) ── */}
       <section data-animate className="bg-[#141f49] py-20">
@@ -633,11 +633,10 @@ export default function Home() {
                 key={amenity.label}
                 onMouseEnter={() => setActiveAmenity(i)}
                 onClick={() => setActiveAmenity(i)}
-                className={`relative cursor-pointer overflow-hidden rounded-[1.5rem] transition-[flex-grow] duration-500 ease-in-out ${
-                  active
-                    ? "flex-[6] text-white"
-                    : "flex-[1] bg-[#ececec] hover:bg-[#e4e4e4]"
-                }`}
+                className={`relative cursor-pointer overflow-hidden rounded-[1.5rem] transition-[flex-grow] duration-500 ease-in-out ${active
+                  ? "flex-[6] text-white"
+                  : "flex-[1] bg-[#ececec] hover:bg-[#e4e4e4]"
+                  }`}
                 style={
                   active
                     ? { background: "linear-gradient(180deg, #F7841E 0%, #8E54A8 52%, #1B3CFF 100%)" }
@@ -646,18 +645,16 @@ export default function Home() {
               >
                 {/* Number — top-left */}
                 <span
-                  className={`absolute left-5 top-5 text-2xl font-medium tracking-tight ${
-                    active ? "text-white" : "text-slate-800"
-                  }`}
+                  className={`absolute left-5 top-5 text-2xl font-medium tracking-tight ${active ? "text-white" : "text-slate-800"
+                    }`}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
 
                 {/* Expanded content */}
                 <div
-                  className={`absolute inset-0 flex flex-col px-8 pt-20 transition-opacity duration-300 ${
-                    active ? "opacity-100 delay-200" : "pointer-events-none opacity-0"
-                  }`}
+                  className={`absolute inset-0 flex flex-col px-8 pt-20 transition-opacity duration-300 ${active ? "opacity-100 delay-200" : "pointer-events-none opacity-0"
+                    }`}
                 >
                   <h3 className="text-2xl font-semibold leading-snug sm:text-3xl">{amenity.title}</h3>
                   <p className="mt-3 max-w-md text-sm leading-7 text-white/85">
@@ -676,9 +673,8 @@ export default function Home() {
 
                 {/* Vertical label — bottom-left */}
                 <span
-                  className={`absolute bottom-5 left-5 whitespace-nowrap text-sm font-medium [writing-mode:vertical-rl] rotate-180 ${
-                    active ? "text-white/90" : "text-slate-700"
-                  }`}
+                  className={`absolute bottom-5 left-5 whitespace-nowrap text-sm font-medium [writing-mode:vertical-rl] rotate-180 ${active ? "text-white/90" : "text-slate-700"
+                    }`}
                 >
                   {amenity.label}
                 </span>
@@ -705,8 +701,8 @@ export default function Home() {
             <p className="mt-2 text-sm leading-7 text-slate-500">
               A reserved workspace designed for professionals who need consistency, productivity, and a dedicated business setup.
             </p>
-            <p className="mt-6 text-3xl font-extrabold text-slate-900">
-              ₹8,999<span className="text-base font-normal text-slate-400">/month</span>
+            <p className="mt-6 text-sm font-semibold text-slate-600">
+              Contact us for pricing
             </p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-slate-400">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
@@ -717,11 +713,8 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-8 flex gap-3">
-              <Link href="/contact" className="flex-1 rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Enquire Now
-              </Link>
-              <Link href="/contact" className="flex-1 rounded-xl bg-[#141f49] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#1c2d63]">
-                Book Workspace
+              <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
+                Contact Us
               </Link>
             </div>
           </div>
@@ -736,7 +729,7 @@ export default function Home() {
             <p className="mt-2 text-sm leading-7 text-white/70">
               Custom office solutions for growing enterprises requiring scalable infrastructure and premium business facilities.
             </p>
-            <p className="mt-6 text-xl font-bold text-white">Custom Pricing Available</p>
+            <p className="mt-6 text-sm font-semibold text-white/80">Contact Sales for custom pricing</p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-white/40">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
               {["Custom office setup", "Dedicated support team", "Branding options", "Conference room access", "IT infrastructure", "Premium lounge access"].map((f) => (
@@ -749,9 +742,9 @@ export default function Home() {
               <Link href="/contact" className="flex-1 rounded-xl border border-white/20 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-white/10">
                 Contact Sales
               </Link>
-              <Link href="/contact" className="flex-1 rounded-xl bg-[#F28C28] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#e07d20]">
+              {/* <Link href="/contact" className="flex-1 rounded-xl bg-[#F28C28] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#e07d20]">
                 Request Proposal
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -762,8 +755,8 @@ export default function Home() {
             <p className="mt-2 text-sm leading-7 text-slate-500">
               Premium fully furnished private cabins for startups and teams needing privacy, comfort, and a professional environment.
             </p>
-            <p className="mt-6 text-3xl font-extrabold text-slate-900">
-              ₹24,999<span className="text-base font-normal text-slate-400">/month</span>
+            <p className="mt-6 text-sm font-semibold text-slate-600">
+              Contact us for pricing
             </p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-slate-400">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
@@ -774,11 +767,8 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-8 flex gap-3">
-              <Link href="/contact" className="flex-1 rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Enquire Now
-              </Link>
-              <Link href="/contact" className="flex-1 rounded-xl bg-[#141f49] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#1c2d63]">
-                Book Workspace
+              <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
+                Contact Us
               </Link>
             </div>
           </div>
@@ -907,7 +897,7 @@ export default function Home() {
               </div>
               <p className="mt-3 text-sm text-slate-500">Call us directly</p>
               <a href="tel:+15551234567" className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
-                +1 (555) 123-4567
+                +91 93598 05818
               </a>
             </div>
 
