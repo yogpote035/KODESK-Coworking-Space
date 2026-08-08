@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: "Kodesk",
   description: "Premium coworking spaces designed for modern professionals and innovative teams.",
   icons: {
-    icon: "/kodeskserviceslogo.png",
+    icon: "/kodeskserviceslogo2.png",
   },
 };
 
