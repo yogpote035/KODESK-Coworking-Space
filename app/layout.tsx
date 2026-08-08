@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono,Kodchasan } from "next/font/google";
+import { Geist, Geist_Mono, Kodchasan } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/shared/Footer";
 import { Navbar } from "@/components/shared/Navbar";
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: "Kodesk",
   description: "Premium coworking spaces designed for modern professionals and innovative teams.",
   icons: {
-    icon: "/assets/icons/services/kodeskserviceslogo.png",
+    icon: "/kodeskserviceslogo.png",
   },
 };
 
