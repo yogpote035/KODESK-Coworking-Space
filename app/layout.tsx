@@ -23,6 +23,9 @@ const kodchasan = Kodchasan({
 export const metadata: Metadata = {
   title: "Kodesk",
   description: "Premium coworking spaces designed for modern professionals and innovative teams.",
+  icons: {
+    icon: "/assets/icons/services/kodeskserviceslogo.png",
+  },
 };
 
 export default function RootLayout({
