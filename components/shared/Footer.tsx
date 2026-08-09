@@ -102,6 +102,8 @@ export function Footer() {
                 <Link
                   key={item.label}
                   href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={item.label}
                   className="flex h-10 w-10 items-center  transition hover:bg-white/10"
                 >

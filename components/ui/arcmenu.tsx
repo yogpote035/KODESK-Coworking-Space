@@ -83,6 +83,8 @@ export function ArcMenu() {
               >
                 <Link
                   href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className={`flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white shadow-xl transition-transform hover:scale-110 active:scale-90 ${item.color}`}
                 >
                   {item.icon}
