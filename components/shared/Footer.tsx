@@ -5,6 +5,7 @@ import instagramIcon from "@/assets/icons/footer/instagram .svg";
 import linkedinIcon from "@/assets/icons/footer/linkedin.svg";
 import whatsappIcon from "@/assets/icons/footer/whatsapp.svg";
 import kodeskLogo from "@/assets/icons/navbar/Services/kodesklogo.png";
+import { business } from "@/lib/business";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -16,19 +17,19 @@ const quickLinks = [
 ];
 
 const services = [
-  { href: "/services/day-pass", label: "Day pass" },
   { href: "/services/coworking-space", label: "Coworking Space" },
-  { href: "/services/managed-office", label: "Managed Office" },
-  { href: "/services/flexible-seating", label: "Flexible Seating" },
   { href: "/services/dedicated-desk", label: "Dedicated Desk" },
+  { href: "/services/private-cabin", label: "Private Office" },
+  { href: "/services/managed-office", label: "Managed Office" },
   { href: "/services/meeting-room", label: "Meeting Room" },
+  { href: "/services/day-pass", label: "Day Pass" },
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "#", icon: instagramIcon },
-  { label: "WhatsApp", href: "#", icon: whatsappIcon },
-  { label: "Facebook", href: "#", icon: facebookIcon },
-  { label: "LinkedIn", href: "#", icon: linkedinIcon },
+  { label: "Instagram", href: business.socialLinks.instagram, icon: instagramIcon },
+  { label: "WhatsApp", href: business.socialLinks.whatsapp, icon: whatsappIcon },
+  { label: "Facebook", href: business.socialLinks.facebook, icon: facebookIcon },
+  { label: "LinkedIn", href: business.socialLinks.linkedin, icon: linkedinIcon },
 ];
 
 export function Footer() {
@@ -38,8 +39,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.1fr_0.8fr_0.95fr_0.75fr]">
           <div className="max-w-[280px]">
             <p className="text-sm leading-6 text-white/90 sm:text-[0.98rem]">
-              Premium coworking spaces designed for modern professionals and
-              innovative teams.
+              Flexible workspace solutions for professionals, startups and businesses in Baner, Pune.
             </p>
           </div>
 
@@ -57,7 +57,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="text-[1.05rem] font-medium text-white">Services</h2>
+            <h2 className="text-[1.05rem] font-medium text-white">Workspace</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
               {services.map((item) => (
                 <li key={item.href}>
@@ -70,24 +70,19 @@ export function Footer() {
           </div>
 
           <div>
-            <h2 className="text-[1.05rem] font-medium text-white">Contact Us</h2>
+            <h2 className="text-[1.05rem] font-medium text-white">Contact</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
               <li>
-                <Link className="transition hover:text-white" href="/contact">
-                  Support call
-                </Link>
+                <a className="transition hover:text-white" href={business.phoneHref}>{business.phone}</a>
               </li>
               <li>
-                <Link className="transition hover:text-white" href="/contact">
-                  Privacy policy
-                </Link>
+                <a className="transition hover:text-white" href={business.emailHref}>{business.email}</a>
               </li>
               <li>
-                <Link className="transition hover:text-white" href="/contact">
-                  Terms of service
-                </Link>
+                <span>{business.address}</span>
               </li>
             </ul>
+            <p className="mt-4 text-[0.95rem] text-white/90">Reception: {business.receptionHours}</p>
           </div>
         </div>
 
@@ -125,7 +120,7 @@ export function Footer() {
 
         <div className="mt-5 border-t border-white/25 pt-6">
           <p className="text-center text-sm text-white/90">
-            &copy; 2026 KODESK Coworking Space. All rights reserved.
+            &copy; 2026 {business.name}. All rights reserved.
           </p>
         </div>
       </div>

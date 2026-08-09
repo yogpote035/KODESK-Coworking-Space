@@ -18,37 +18,37 @@ import excellenceIcon from "@/assets/icons/about/excellence.png";
 import { ArcMenu } from "@/components/ui/arcmenu";
 
 const stats = [
-  { value: "145+", label: "Companies Working" },
-  { value: "08+", label: "Years Experienced" },
-  { value: "500+", label: "Total Seats" },
-  { value: "95%", label: "Occupancy Rate" },
+  { value: "—", label: "Details available on request" },
+  { value: "—", label: "Details available on request" },
+  { value: "—", label: "Details available on request" },
+  { value: "—", label: "Details available on request" },
 ];
 
 const missionCards = [
   {
     icon: missionIcon,
     eyebrow: "Our Mission",
-    title: "Empowering Businesses Through Inspiring Workspaces",
-    text: "Our mission is to cultivate an ecosystem where businesses of all sizes can access world-class infrastructure and a supportive community that drives sustainable growth and collective innovation.",
+    title: "Productive, Flexible and Professional Workspaces",
+    text: "Create productive, flexible and professional workspaces where people can focus on their work and businesses can grow.",
   },
   {
     icon: visionIcon,
     eyebrow: "Our Vision",
-    title: "Redefining the Future of Workspaces",
-    text: "To be the global benchmark for professional workspaces, where technology, design, and hospitality converge to create a frictionless experience for the world's most ambitious teams.",
+    title: "A Workspace Environment to Connect and Grow",
+    text: "Build a workspace environment where professionals and businesses can work, connect and grow.",
   },
 ];
 
 const values = [
   {
     icon: innovationIcon,
-    title: "Innovation",
-    text: "Constantly evolving our spaces and services to meet modern work demands.",
+    title: "Productivity",
+    text: "Spaces designed to support focused work.",
   },
   {
     icon: collaborationIcon,
-    title: "Collaboration",
-    text: "Building bridges between diverse industries to spark new opportunities.",
+    title: "Community",
+    text: "A professional environment for people and teams.",
   },
   {
     icon: flexibilityIcon,
@@ -57,33 +57,19 @@ const values = [
   },
   {
     icon: excellenceIcon,
-    title: "Excellence",
-    text: "A relentless commitment to premium hospitality and executive service.",
+    title: "Professionalism",
+    text: "A dependable setting for modern work.",
   },
 ];
 
 const communityPoints = [
-  "Weekly industry networking mixers",
-  "Premium in-house coffee & refreshments",
-  "24/7 access for high-impact teams",
+  "Flexible workspace options",
+  "Professional work environment",
+  "Modern amenities",
 ];
 
-const team = [
-  {
-    image: rajeshImage,
-    hoverImage: rajeshHoverImage,
-    name: "Rajesh Malhotra",
-    role: "Founder & Director",
-    text: "Vision-driven leadership focused on innovation, community building, and workspace excellence.",
-  },
-  {
-    image: vikramImage,
-    hoverImage: vikramHoverImage,
-    name: "Vikram Singh",
-    role: "Community Manager",
-    text: "The heartbeat of Kodesk, dedicated to fostering networking and ensuring every member feels integrated into the family.",
-  },
-];
+// Team biographies remain unpublished until verified by the business owner.
+const team: { image: typeof rajeshImage; hoverImage: typeof rajeshHoverImage; name: string; role: string; text: string }[] = [];
 
 export default function AboutPage() {
   return (
@@ -106,12 +92,10 @@ export default function AboutPage() {
             Kodesk About
           </p>
           <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl mt-8">
-            Inspiring Coworking Spaces for Modern Businesses
+            About KODESK
           </h1>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-white/78 sm:text-base mt-19">
-            Kodesk is more than just a coworking space, it&apos;s a thriving
-            community built for innovators, entrepreneurs, freelancers,
-            startups, and growing enterprises seeking a professional sanctuary.
+            Flexible workspace solutions for professionals, startups and businesses in Baner, Pune.
           </p>
 
           <div className="mt-18 flex flex-wrap justify-center gap-4">
@@ -141,21 +125,14 @@ export default function AboutPage() {
           <div className="self-center">
             <p className="text-sm text-slate-500">Our Heritage</p>
             <h2 className="mt-4 text-3xl font-medium tracking-tight text-slate-900">
-              The Kodesk Story
+              Built Around the Way You Work
             </h2>
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
               <p>
-                At Kodesk, we believe workspaces should inspire ideas rather
-                than restrict them. Our journey began with a simple observation:
-                the modern professional needs more than just a desk; they need
-                an environment that fosters focused productivity and genuine
-                connection.
+                KODESK provides flexible workspace options designed to support different ways of working — from individual professionals and freelancers to startups, teams and growing businesses.
               </p>
               <p>
-                Located in the heart of Baner, Pune, Kodesk has evolved into a
-                premier destination for businesses that refuse to compromise on
-                quality. We have meticulously designed every corner of our
-                facility to reflect the sophistication of our members.
+                Our Baner, Pune workspace brings together coworking, dedicated desks, private offices and managed workspaces in one professional environment.
               </p>
             </div>
 
@@ -176,7 +153,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <p className="text-sm text-slate-600">
-                Trusted by over 2,000+ Pune professionals
+                Flexible workspace solutions in Baner, Pune
               </p>
             </div>
           </div>
@@ -190,8 +167,8 @@ export default function AboutPage() {
               />
             </div>
             <div className="absolute bottom-5 left-1 rounded-[4px] bg-[linear-gradient(135deg,#3555ff_0%,#ff8a24_100%)] px-6 py-5 text-white border border-white hover:bg-[linear-gradient(90deg,#3651AD_5.09%,#16214794_82%)] ">
-              <p className="text-3xl font-semibold leading-none">08+</p>
-              <p className="mt-1 text-sm text-white/85">Years Experienced</p>
+              <p className="text-3xl font-semibold leading-none">—</p>
+              <p className="mt-1 text-sm text-white/85">Details on request</p>
             </div>
           </div>
         </div>
@@ -307,14 +284,10 @@ export default function AboutPage() {
 
           <div className="self-center lg:pl-6">
             <h2 className="max-w-3xl text-[clamp(2.2rem,4vw,4.2rem)] font-medium leading-[1.04] tracking-tight text-slate-900">
-              A Community Built for Growth &amp; Creativity
+              Work, Connect and Grow
             </h2>
             <p className="mt-8 max-w-2xl text-[1.05rem] leading-8 text-slate-700">
-              The Kodesk culture is defined by its vibrant energy. We aren&apos;t
-              just a place to plug in; we are a destination for professional
-              breakthroughs. Through curated networking events, skill-sharing
-              workshops, and our signature member mixers, we ensure that every
-              hour spent here adds value to your professional journey.
+              KODESK brings flexible workspace options together in a professional Baner, Pune environment designed for focused work and growing businesses.
             </p>
 
             <ul className="mt-10 space-y-6">
@@ -334,9 +307,9 @@ export default function AboutPage() {
       <section className="bg-white py-20">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-sm text-[#5d63d1]">The Minds Behind Kodesk</p>
+            <p className="text-sm text-[#5d63d1]">KODESK Coworking Space</p>
             <h2 className="mt-2 text-3xl font-medium tracking-tight text-slate-900">
-              Meet the Visionaries
+              Our Workspace
             </h2>
           </div>
 
@@ -388,7 +361,7 @@ export default function AboutPage() {
 
         <div className="relative mx-auto w-full max-w-7xl px-4 py-16 text-center text-white sm:px-6 lg:px-8">
           <h2 className="text-3xl font-medium tracking-tight">
-            A Community Built for Growth &amp; Creativity
+            Ready to Find Your Ideal Workspace?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/80">
             Schedule a free tour and see the space for yourself. Our team is

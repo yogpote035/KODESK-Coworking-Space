@@ -10,39 +10,47 @@ import { ArcMenu } from "@/components/ui/arcmenu";
 import { services } from "@/data/service";
 import keybenefitIcon from "@/assets/icons/services/keybenefits.svg";
 import Community from "@/assets/images/about/Community.png"
+import { business } from "@/lib/business";
 
 const contactCards = [
   {
     title: "Visit Us",
-    description: "KODESK Coworking Space — Baner, Pune",
+    description: business.address,
     icon: visitIcon,
   },
   {
     title: "Call Us",
-    description: "+91 93598 05818",
+    description: business.phone,
     descriptionAlt: "",
     icon: callIcon,
   },
   {
     title: "Email Us",
-    description: "hello@kodesk.com",
-    descriptionAlt: "support@kodesk.com",
+    description: business.email,
     icon: emailIcon,
   },
   {
     title: "Working Hours",
-    description: "Mon - Sat / 8:00 AM - 8:00 PM",
+    description: business.receptionHours,
     icon: workingIcon,
   },
 ];
 
 const reasons = [
-  "Premium locations in business districts",
-  "24/7 secure access",
-  "World-class amenities",
-  "Vibrant professional community",
-  "Flexible membership plans",
-  "Dedicated support team",
+  "Prime location in Baner, Pune",
+  "High-speed internet",
+  "Flexible workspace options",
+  "Professional work environment",
+  "Meeting facilities",
+  "Modern amenities",
+];
+
+const contactFaqs = [
+  { question: "Which workspace options are available at KODESK?", answer: "KODESK offers coworking space, dedicated desks, private offices, managed offices, meeting rooms, day passes and other flexible workspace options. Please contact our team for current availability." },
+  { question: "Is KODESK a good fit for startups and freelancers?", answer: "Yes. Flexible workspace options are available for independent professionals, freelancers, startups and growing teams." },
+  { question: "Is professional support available for managed office teams?", answer: "Reception support is available at KODESK. Please contact our team to confirm the support available for your managed office requirement." },
+  { question: "Can a managed office be arranged around my team’s needs?", answer: "Please contact our team to discuss your team’s workspace requirements and the currently available managed office options." },
+  { question: "What is the per-seat cost for a managed office?", answer: "Managed office pricing is based on current requirements and availability. Please contact our team for a quote." },
 ];
 
 export default function ContactPage() {
@@ -65,20 +73,20 @@ export default function ContactPage() {
               Get In Touch
             </p>
             <h1 className="mt-8 text-4xl font-[var(--font-kodchasan)] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-tight max-w-9xl w-full text-center">
-              We’d love to hear from you. Let’s discuss your workspace needs.
+              Let&apos;s Find the Right Workspace for You
             </h1>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
               <Link
                 href="/pricing"
                 className="inline-flex items-center justify-center rounded-[12px] bg-[#121E46] border border-white px-12 py-3 text-sm font-semibold text-white transition hover:bg-[#1e40af]"
               >
-                Get Started — Book a Tour
+                Book a Free Tour
               </Link>
               <Link
                 href="/pricing"
                 className="inline-flex items-center justify-center rounded-[12px] border-2 border-white/50 bg-transparent px-12 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
-                View Memberships
+                WhatsApp Us
               </Link>
             </div>
           </div>
@@ -121,7 +129,7 @@ export default function ContactPage() {
             <form className="mt-10 space-y-5">
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Full Name
+                  Name
                 </label>
                 <input
                   type="text"
@@ -131,32 +139,32 @@ export default function ContactPage() {
               </div>
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="hello@kodesk.com"
-                  className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-slate-700">
-                  Phone Number
+                  Phone
                 </label>
                 <input
                   type="tel"
-                  placeholder="+91 9876543210"
+                  placeholder={business.phone}
                   className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
                 />
               </div>
 
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Services
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder={business.email}
+                  className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-slate-700">
+                  Interested In
                 </label>
                 <select className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10">
-                  <option value="">Select Services</option>
+                  <option value="">Select a workspace</option>
                   {services.map((service) => (
                     <option key={service.slug} value={service.slug}>
                       {service.label}
@@ -180,14 +188,14 @@ export default function ContactPage() {
                 type="submit"
                 className="inline-flex w-full items-center justify-center rounded-[0.75rem] bg-[#1b2c70] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(20,43,119,0.28)] transition hover:bg-[#16245d]"
               >
-                Send Message
+                Send Enquiry
               </button>
             </form>
           </div>
 
           <div className="space-y-6">
             <Link
-              href="https://maps.google.com/?q=KODESK+Coworking+Space+Baner+Pune"
+              href={business.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open KODESK Coworking Space in Google Maps"
@@ -217,6 +225,23 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
+
+        <section className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[25px]">Frequently Asked Questions</p>
+            <p className="mt-3 text-sm leading-7 text-slate-600">Helpful details about KODESK workspaces and managed office options.</p>
+          </div>
+          <div className="mx-auto mt-8 max-w-3xl space-y-4">
+            {contactFaqs.map((faq) => (
+              <details key={faq.question} className="group rounded-[0.9rem] border border-slate-200 bg-white px-6 shadow-[0_10px_30px_rgba(10,16,40,0.06)]">
+                <summary className="cursor-pointer list-none py-5 text-left text-base font-medium text-slate-900 marker:content-none">
+                  <span className="flex items-center justify-between gap-4">{faq.question}<span className="text-xl text-[#1b2c70] transition group-open:rotate-45">+</span></span>
+                </summary>
+                <p className="border-t border-slate-100 py-5 text-sm leading-7 text-slate-600">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
       </section>
 
       <section className="relative isolate overflow-hidden py-24">

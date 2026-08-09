@@ -8,6 +8,7 @@ import whatsapp from "@/assets/icons/arcmenu/whatsap.png"
 import notinfo from "@/assets/icons/arcmenu/not.png"
 import phone from "@/assets/icons/arcmenu/phone.png"
 import Image from "next/image";
+import { business } from "@/lib/business";
 
 const menuItems = [
   {
@@ -19,7 +20,7 @@ const menuItems = [
         height={24}
       />
     ),
-    href: "https://wa.me/",
+    href: business.socialLinks.whatsapp,
     color: "text-green-600",
     x: -20,
     y: -110,
@@ -33,7 +34,7 @@ const menuItems = [
         height={24}
       />
     ),
-    href: "tel:+123456789",
+    href: business.phoneHref,
     color: "text-blue-600",
     x: -90,
     y: -70,

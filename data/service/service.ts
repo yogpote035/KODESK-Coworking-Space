@@ -29,9 +29,9 @@ import virtualNavIcon from "@/assets/icons/navbar/Services/virtual.png";
 import type { ServiceItem, ServiceNavItem } from "@/data/service/types";
 
 export const serviceNavItems: readonly ServiceNavItem[] = [
-  { slug: "day-pass", label: "Day pass", icon: dayPassNavIcon },
+  { slug: "day-pass", label: "Day Pass", icon: dayPassNavIcon },
   { slug: "meeting-room", label: "Meeting Room" },
-  { slug: "private-cabin", label: "Private Cabin" },
+  { slug: "private-cabin", label: "Private Office" },
   { slug: "coworking-space", label: "Coworking Space", icon: coworkingNavIcon },
   { slug: "managed-office", label: "Managed Office", icon: managedNavIcon },
   { slug: "dedicated-desk", label: "Dedicated Desk", icon: dedicatedNavIcon },
@@ -44,15 +44,15 @@ export const serviceNavItems: readonly ServiceNavItem[] = [
 export const services: ServiceItem[] = [
   {
     slug: "day-pass",
-    label: "Day pass",
-    shortLabel: "Day pass",
+    label: "Day Pass",
+    shortLabel: "Day Pass",
     pdfTitle: "Day Pass",
     description:
-      "Ideal for remote professionals, travelers, and founders who need a polished workspace for a day.",
+      "A flexible workspace option for professionals who need a productive place to work for the day.",
     image: dayPassImage,
     galleryImage: dayPassCutImage,
     accent: "from-[#ff8a24] to-[#24316d]",
-    features: ["Flexible access", "Fast Wi-Fi", "Lounge seating", "Tea and coffee"],
+    features: ["Flexible access", "High-speed Internet", "Productive workspace", "Modern amenities"],
   },
   {
     slug: "meeting-room",
@@ -68,15 +68,15 @@ export const services: ServiceItem[] = [
   },
   {
     slug: "private-cabin",
-    label: "Private Cabin",
-    shortLabel: "Private Cabin",
-    pdfTitle: "Private Cabin",
+    label: "Private Office",
+    shortLabel: "Private Office",
+    pdfTitle: "Private Office",
     description:
-      "A fully private, quiet environment for leadership teams and client-facing work.",
+      "Private workspace options for teams and professionals who need a focused, professional environment.",
     image: privateCabinImage,
     galleryImage: privateCabinCutImage,
     accent: "from-[#ff8a24] to-[#3555ff]",
-    features: ["Quiet focus", "Lockable space", "Dedicated storage", "Flexible layouts"],
+    features: ["Private workspace", "Professional environment", "Flexible arrangements", "Modern amenities"],
   },
   {
     slug: "coworking-space",
@@ -84,11 +84,11 @@ export const services: ServiceItem[] = [
     shortLabel: "Coworking Space",
     pdfTitle: "Coworking Space",
     description:
-      "A vibrant open plan space that encourages collaboration without compromising comfort.",
+      "Flexible workspaces for professionals, freelancers, startups and growing teams.",
     image: coworkingImage,
     galleryImage: coworkingCutImage,
     accent: "from-[#5d63d1] to-[#24316d]",
-    features: ["Open seating", "Collaborative zones", "High-speed internet", "Community energy"],
+    features: ["Flexible seating", "High-speed Internet", "Professional environment", "Modern amenities"],
   },
   {
     slug: "managed-office",
@@ -96,22 +96,22 @@ export const services: ServiceItem[] = [
     shortLabel: "Managed Office",
     pdfTitle: "Managed Office",
     description:
-      "Tailored office suites managed end-to-end so your team can stay focused on growth.",
+      "Fully managed workspace solutions for businesses that want a ready-to-use professional office environment.",
     image: managedOfficeImage,
     galleryImage: managedOfficeCutImage,
     accent: "from-[#24316d] to-[#ff8a24]",
-    features: ["Custom fit-out", "Operations support", "Dedicated cabins", "Scalable plans"],
+    features: ["Ready-to-use workspace", "Flexible arrangements", "Professional environment", "Modern amenities"],
   },
   {
     slug: "dedicated-desk",
     label: "Dedicated Desk",
     shortLabel: "Dedicated Desk",
     pdfTitle: "Dedicated Desk",
-    description: "Your own consistent workspace inside a premium coworking environment.",
+    description: "A reserved workspace for professionals who need a consistent place to work.",
     image: dedicatedDeskImage,
     galleryImage: dedicatedDeskCutImage,
     accent: "from-[#3555ff] to-[#5d63d1]",
-    features: ["Reserved desk", "Personal storage", "24/7 access", "Member perks"],
+    features: ["Reserved desk", "High-speed Internet", "Professional environment", "Modern amenities"],
   },
   {
     slug: "event-space",
@@ -155,7 +155,7 @@ export const services: ServiceItem[] = [
     shortLabel: "Flexible Seating",
     pdfTitle: "Flexible Seating",
     description:
-      "Hot desks and lounge-like seating that adapt to the way your team works each day.",
+      "Flexible workspace options for professionals who need a productive place to work without a fixed long-term setup.",
     image: flexibleSeatingImage,
     galleryImage: flexibleSeatingCutImage,
     accent: "from-[#24316d] to-[#3555ff]",

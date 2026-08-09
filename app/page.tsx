@@ -24,22 +24,22 @@ import managedCutImg from "@/assets/images/Services/cut/Managed.png";
 import flexibleCutImg from "@/assets/images/Services/cut/Flexible Sitting.png";
 const homeServices = [
   {
-    title: "Coworking Spaces",
-    description: "Flexible desk spaces in a collaborative environment perfect for freelancers and small teams.",
+    title: "Coworking Space",
+    description: "Flexible workspaces for professionals, freelancers, startups and growing teams.",
     galleryImage: coworkingCutImg,
     href: "/services/coworking-space",
     bubbleClass: "bg-[#ff8a24]",
   },
   {
     title: "Managed Office",
-    description: "Tailored office suites managed end-to-end so your team can stay focused on growth.",
+    description: "Fully managed workspace solutions for businesses that want a ready-to-use professional office environment.",
     galleryImage: managedCutImg,
     href: "/services/managed-office",
     bubbleClass: "bg-[#1f2d62]",
   },
   {
     title: "Flexible Seating",
-    description: "Hot desks and lounge-like seating that adapt to the way your team works each day.",
+    description: "Flexible workspace options for professionals who need a productive place to work without a fixed long-term setup.",
     galleryImage: flexibleCutImg,
     href: "/services/flexible-seating",
     bubbleClass: "bg-[#ff8a24]",
@@ -47,12 +47,12 @@ const homeServices = [
 ];
 
 const galleryImages = [
-  { src: coworkingImg, alt: "Coworking space" },
-  { src: meetingImg, alt: "Meeting room" },
-  { src: dayPassImg, alt: "Day pass area" },
-  { src: managedImg, alt: "Managed office" },
-  { src: dedicatedImg, alt: "Dedicated desk" },
-  { src: eventImg, alt: "Event space" },
+  { src: coworkingImg, alt: "KODESK coworking space in Baner Pune" },
+  { src: meetingImg, alt: "KODESK meeting room in Baner" },
+  { src: dayPassImg, alt: "KODESK coworking day pass workspace" },
+  { src: managedImg, alt: "KODESK managed office in Baner" },
+  { src: dedicatedImg, alt: "KODESK dedicated desk" },
+  { src: eventImg, alt: "KODESK event space" },
 ];
 
 const amenities = [
@@ -109,49 +109,36 @@ const amenities = [
 const faqs = [
   {
     q: "What is included in the coworking package?",
-    a: "Our coworking package includes access to high-speed fiber internet, ergonomic seating, printing services, unlimited tea & coffee, locker access, and use of all common areas and lounge spaces.",
+    a: "Coworking includes a professional workspace and access to confirmed on-site amenities. Please contact our team for current package details.",
   },
   {
-    q: "Can meeting rooms be booked hourly?",
-    a: "Yes, all our meeting rooms can be booked by the hour. You can reserve them online or via our app with no minimum booking required.",
+    q: "Do you offer a day pass?",
+    a: "Yes. A KODESK day pass is ₹599 per day, subject to availability.",
   },
   {
-    q: "Is parking available?",
-    a: "Yes, dedicated parking is available for all Kodesk members. Day pass holders can access parking on a first-come, first-served basis.",
+    q: "What is the price of a dedicated desk?",
+    a: "A dedicated desk is ₹7,499 per month. Please contact our team to check availability.",
   },
   {
-    q: "What are the operating hours?",
-    a: "Kodesk is open Monday to Saturday, 8 AM – 8 PM. Members on premium plans have 24/7 keycard access.",
+    q: "What are the reception hours?",
+    a: "Reception is open Monday to Saturday, 8:00 AM to 8:00 PM.",
   },
 ];
 
-const testimonials = [
-  {
-    name: "Arjun Patil",
-    role: "Co-Founder, NexaTech Solutions",
-    rating: 4,
-    quote:
-      "Kodesk has completely transformed the way our team works. The premium interiors, seamless internet connectivity, and professional environment create the perfect atmosphere for productivity and collaboration.",
-  },
-  {
-    name: "Sneha Kulkarni",
-    role: "Marketing Consultant",
-    rating: 4,
-    quote:
-      "The workspace feels modern, inspiring, and incredibly comfortable. From the meeting rooms to the cafeteria, every detail is thoughtfully designed for professionals and growing businesses.",
-  },
-];
+// Testimonials remain empty until verified member feedback is approved for publication.
+const testimonials: { name: string; role: string; rating: number; quote: string }[] = [];
 
 const serviceStrip = [
-  { label: "Day Pass", slug: "day-pass" },
-  { label: "Meeting Room", slug: "meeting-room" },
   { label: "Coworking Space", slug: "coworking-space" },
-  { label: "Managed Office", slug: "managed-office" },
   { label: "Dedicated Desk", slug: "dedicated-desk" },
+  { label: "Private Office", slug: "private-cabin" },
+  { label: "Managed Office", slug: "managed-office" },
+  { label: "Flexible Seating", slug: "flexible-seating" },
+  { label: "Meeting Room", slug: "meeting-room" },
   { label: "Event Space", slug: "event-space" },
+  { label: "Day Pass", slug: "day-pass" },
   { label: "Virtual Office", slug: "virtual-office" },
   { label: "Podcast Studio", slug: "podcast-studio" },
-  { label: "Flexible Seating", slug: "flexible-seating" },
 ];
 
 export default function Home() {
@@ -272,6 +259,7 @@ export default function Home() {
 
   return (
     <div ref={rootRef} className="bg-[#f2f2ef]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) }) }} />
 
       {/* ── Hero ── */}
       <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
@@ -289,11 +277,11 @@ export default function Home() {
             Achieving Success Together
           </p>
           <h1 data-hero-item className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Designed for Visionaries
+            Premium Coworking Space in Baner, Pune
           </h1>
           <h2 data-hero-item className="mt-2 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-[#F28C28]">Built for</span>
-            <span className="text-white"> Productivity</span>
+            <span className="text-[#F28C28]">Flexible Workspaces</span>
+            <span className="text-white"> Designed for Productivity</span>
           </h2>
         </div>
 
@@ -308,21 +296,21 @@ export default function Home() {
               />
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder="Phone / WhatsApp"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
               <input
-                type="tel"
-                placeholder="+91 08822892809"
+                type="email"
+                placeholder="Email"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
               <input
                 type="text"
-                placeholder="Location"
+                placeholder="Workspace Required"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
               <button className="shrink-0 rounded-xl bg-[#141f49] px-7 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#1c2d63] active:scale-[0.98] transition sm:col-span-2 lg:col-span-1">
-                Book Now
+                Book a Free Tour
               </button>
             </div>
           </div>
@@ -357,9 +345,9 @@ export default function Home() {
       {/* ── Our Services ── */}
       <section data-animate className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div data-fade className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">Our Services</h2>
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">Workspace Solutions for Every Stage of Your Business</h2>
           <p className="mt-3 text-sm text-slate-500 sm:text-base">
-            Everything you need to grow your business in one premium location
+            From flexible day passes to private offices and managed workspaces, choose a workspace that fits the way you work.
           </p>
         </div>
 
@@ -425,8 +413,8 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
           <div data-fade className="text-center">
-            <h2 className="text-3xl font-medium text-black sm:text-4xl lg:text-[42px]">About</h2>
-            <p className="mt-3 text-base text-black/70">A new standard for the workday.</p>
+            <h2 className="text-3xl font-medium text-black sm:text-4xl lg:text-[42px]">About KODESK</h2>
+            <p className="mt-3 text-base text-black/70">Flexible workspace solutions in Baner, Pune.</p>
           </div>
 
           <div className="mt-12 grid items-center gap-14 sm:mt-16 lg:grid-cols-2">
@@ -436,22 +424,22 @@ export default function Home() {
             <div>
 
               <h3 data-fade className="max-w-[620px] text-2xl font-medium leading-[1.2] text-black sm:text-3xl lg:text-[40px]">
-                Premium Coworking Spaces for Modern Professionals
+                A Better Place to Work, Connect and Grow
               </h3>
 
               <p data-fade className="mt-6 max-w-[620px] text-base leading-8 text-black/75 sm:mt-8">
-                At Kodesk, we're redefining the workspace experience. Our premium coworking spaces combine cutting-edge design, world-class amenities, and a vibrant community to create the perfect environment for innovation and growth.
+                KODESK provides flexible workspace solutions in Baner, Pune for freelancers, professionals, startups and growing businesses. From coworking and dedicated desks to private offices and managed workspaces, KODESK provides the infrastructure and flexibility businesses need to work efficiently.
               </p>
 
 
               <div className="mt-10 space-y-5">
 
                 {[
-                  "Prime locations in business districts",
-                  "24/7 secure access",
-                  "High-speed fiber internet",
-                  "Professional community",
-                  "Flexible membership plans",
+                  "Prime location in Baner, Pune",
+                  "High-speed internet",
+                  "Flexible workspace options",
+                  "Professional work environment",
+                  "Meeting facilities",
                   "Modern amenities"
                 ].map((item) => (
 
@@ -519,11 +507,11 @@ export default function Home() {
                       data-pad="2"
                       className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
                     >
-                      08+
+                      —
                     </h3>
 
                     <p className="mt-1 text-base text-white sm:text-[17px]">
-                      Years Experienced
+                      Details available on request
                     </p>
 
                   </div>
@@ -536,11 +524,11 @@ export default function Home() {
                       data-count="145"
                       className="text-3xl font-medium leading-none text-white sm:text-4xl lg:text-[44px]"
                     >
-                      145
+                      —
                     </h3>
 
                     <p className="mt-1 text-base text-white sm:text-[17px]">
-                      Companies Working
+                      Details available on request
                     </p>
 
                   </div>
@@ -561,9 +549,9 @@ export default function Home() {
       <section data-animate className="bg-[#141f49] py-20">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div data-fade className="text-center">
-            <h2 className="text-3xl font-bold text-white">Our spaces</h2>
+            <h2 className="text-3xl font-bold text-white">Find the Workspace That Fits You</h2>
             <p className="mt-3 text-sm text-white/60">
-              Crafted environments designed for serious work
+              Explore flexible spaces designed for focused work, productive meetings and growing teams.
             </p>
           </div>
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -593,9 +581,9 @@ export default function Home() {
       {/* ── World Class Amenities ── */}
       <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">World Class Amenities</h2>
+          <h2 className="text-3xl font-bold text-slate-900">World-Class Amenities</h2>
           <p className="mt-3 text-sm text-slate-500">
-            Everything you need to stay productive and comfortable
+            Everything you need to stay productive and comfortable throughout your workday.
           </p>
         </div>
         {/* Mobile / small tablet — stacked cards */}
@@ -684,12 +672,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Exclusive Offers ── */}
+      {/* ── Workspace Plans ── */}
       <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">Exclusive Offers</h2>
+          <h2 className="text-3xl font-bold text-slate-900">Workspace Plans</h2>
           <p className="mt-3 text-sm text-slate-500">
-            Take advantage of our special promotions and save big
+            Flexible workspace options designed around the way you work.
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -697,12 +685,12 @@ export default function Home() {
           {/* Card 1 — New Member */}
           <div data-fade className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">New Member</p>
-            <h3 className="mt-3 text-xl font-bold text-slate-900">Membership plans</h3>
+            <h3 className="mt-3 text-xl font-bold text-slate-900">Dedicated Desk</h3>
             <p className="mt-2 text-sm leading-7 text-slate-500">
               A reserved workspace designed for professionals who need consistency, productivity, and a dedicated business setup.
             </p>
             <p className="mt-6 text-sm font-semibold text-slate-600">
-              Contact us for pricing
+              ₹7,499 / month
             </p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-slate-400">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
@@ -714,7 +702,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Contact Us
+                Check Availability
               </Link>
             </div>
           </div>
@@ -725,7 +713,7 @@ export default function Home() {
               Popular
             </span>
             <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-white/50">Enterprise</p>
-            <h3 className="mt-3 text-xl font-bold text-white">Enterprise Office</h3>
+            <h3 className="mt-3 text-xl font-bold text-white">Managed Office</h3>
             <p className="mt-2 text-sm leading-7 text-white/70">
               Custom office solutions for growing enterprises requiring scalable infrastructure and premium business facilities.
             </p>
@@ -740,7 +728,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="flex-1 rounded-xl border border-white/20 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-white/10">
-                Contact Sales
+                Request a Quote
               </Link>
               {/* <Link href="/contact" className="flex-1 rounded-xl bg-[#F28C28] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#e07d20]">
                 Request Proposal
@@ -751,7 +739,7 @@ export default function Home() {
           {/* Card 3 — Private Cabin */}
           <div data-fade className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">Exclusive</p>
-            <h3 className="mt-3 text-xl font-bold text-slate-900">Private Cabin</h3>
+            <h3 className="mt-3 text-xl font-bold text-slate-900">Private Office</h3>
             <p className="mt-2 text-sm leading-7 text-slate-500">
               Premium fully furnished private cabins for startups and teams needing privacy, comfort, and a professional environment.
             </p>
@@ -768,7 +756,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Contact Us
+                Request Pricing
               </Link>
             </div>
           </div>
@@ -777,11 +765,12 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ── */}
+      {testimonials.length > 0 ? (
       <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
           <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">What Our Members Say</h2>
           <p className="mt-3 text-sm text-slate-500 sm:text-base">
-            Join thousands of satisfied professionals who chose Kodesk
+            Hear from professionals and businesses working from KODESK.
           </p>
         </div>
 
@@ -820,6 +809,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      ) : null}
 
       {/* ── FAQ ── */}
       <section data-animate className="mx-auto w-full max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
@@ -896,7 +886,7 @@ export default function Home() {
                 <span className="text-lg font-bold text-slate-900">Phone</span>
               </div>
               <p className="mt-3 text-sm text-slate-500">Call us directly</p>
-              <a href="tel:+15551234567" className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
+              <a href="tel:+919359805818" className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
                 +91 93598 05818
               </a>
             </div>

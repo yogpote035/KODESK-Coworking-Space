@@ -9,12 +9,12 @@ import servicePageLogo from "@/assets/icons/services/kodeskserviceslogo.png";
 import { ServiceStrip } from "@/components/shared/ServiceStrip";
 
 const navItems = [
-  // { href: "/", label: "Home" },
-  // { href: "/about", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  // { href: "/gallery", label: "Gallery" },
+  { href: "/gallery", label: "Gallery" },
   { href: "/pricing", label: "Pricing" },
-  // { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {

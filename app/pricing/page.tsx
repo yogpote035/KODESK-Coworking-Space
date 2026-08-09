@@ -3,13 +3,13 @@ import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
 export default function PricingPage() {
   return (
     <PlaceholderPage
-      eyebrow="Pricing"
-      title="Flexible memberships for teams of every size."
-      description="Day passes, hot desks, dedicated desks, and managed offices can live here with the same premium visual system used on the About page."
+      eyebrow="Workspace Plans"
+      title="Flexible workspace options designed around the way you work."
+      description="Day Pass: ₹599 per day. Dedicated Desk: ₹7,499 per month. Please contact our team for private office, managed office and meeting room pricing."
       primaryHref="/contact"
       primaryLabel="Request Pricing"
-      secondaryHref="/about"
-      secondaryLabel="Explore About"
+      secondaryHref="/services"
+      secondaryLabel="View Services"
     />
   );
 }

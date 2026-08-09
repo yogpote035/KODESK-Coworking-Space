@@ -6,11 +6,13 @@ import communityImage from "@/assets/images/about/Community.png";
 import { ArcMenu } from "@/components/ui/arcmenu";
 import { ServiceShowcaseCard } from "@/components/shared/ServiceShowcaseCard";
 import keybenefits from "@/assets/icons/services/keybenefits.svg";
+import { siteUrl } from "@/lib/seo";
 
 
 
-export function ServiceDetail({ service }: { service: ServiceItem }) {
+export function ServiceDetail({ service, heading, heroDescription }: { service: ServiceItem; heading?: string; heroDescription?: string }) {
   const content = serviceDetailContent[service.slug];
+  const pageTitle = heading ?? service.pdfTitle;
 
   const related = content.relatedSlugs
     .map((slug) => services.find((item) => item.slug === slug))
@@ -18,11 +20,12 @@ export function ServiceDetail({ service }: { service: ServiceItem }) {
 
   return (
     <div className="bg-[#f5f3ee]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: siteUrl }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: pageTitle }] }) }} />
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src={service.image}
-            alt=""
+            alt={`${service.label} at KODESK Coworking Space in Baner, Pune`}
             fill
             priority
             sizes="100vw"
@@ -34,18 +37,18 @@ export function ServiceDetail({ service }: { service: ServiceItem }) {
 
         <div className="relative mx-auto min-h-[560px] max-w-7xl px-4 pb-16 pt-28 sm:px-6 sm:pt-32 lg:min-h-[680px] lg:px-8 lg:pt-32">
           <div className="max-w-2xl text-white">
-            <p className="text-sm font-medium text-white/88">Kodesk Service</p>
+            <p className="text-sm font-medium text-white/88">KODESK Service</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-[-0.05em] drop-shadow-[0_2px_8px_rgba(0,0,0,0.18)] sm:text-6xl lg:text-[4.6rem]">
-              {service.pdfTitle}
+              {pageTitle}
             </h1>
             <p className="mt-6 max-w-xl text-[0.98rem] leading-8 text-white/84 sm:text-[1.05rem]">
-              {content.heroDescription}
+              {heroDescription ?? content.heroDescription}
             </p>
             <Link
               href="/contact"
               className="mt-8 inline-flex rounded-[0.8rem] border border-white/35 bg-[#152153]/80 px-5 py-3 text-sm font-medium text-white shadow-[0_10px_24px_rgba(10,16,40,0.18)] transition hover:bg-[#152153]"
             >
-              Get Started - Book a Tour
+              Book a Free Tour
             </Link>
           </div>
           <ArcMenu />

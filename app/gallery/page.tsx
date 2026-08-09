@@ -22,32 +22,32 @@ const filters = [
 
 const galleryItems = [
   {
-    title: "Executive Meeting Room",
+    title: "KODESK Meeting Room in Baner",
     image: meetingRoomImage,
     category: "meeting-rooms",
   },
   {
-    title: "Workspace",
+    title: "KODESK Coworking Space in Baner Pune",
     image: workspaceImage,
     category: "workspace",
   },
   {
-    title: "Comfortable Lounge",
+    title: "KODESK Coworking Lounge",
     image: loungeImage,
     category: "lounge-areas",
   },
   {
-    title: "Private Office",
+    title: "KODESK Private Office in Baner",
     image: privateOfficeImage,
     category: "workspace",
   },
   {
-    title: "Creative Workspace",
+    title: "KODESK Dedicated Desk",
     image: creativeImage,
     category: "amenities",
   },
   {
-    title: "Conference Room",
+    title: "KODESK Meeting Room",
     image: conferenceImage,
     category: "meeting-rooms",
   },
@@ -67,7 +67,7 @@ export default function GalleryPage() {
         <div className="absolute inset-0">
           <Image
             src={heroImage}
-            alt="Kodesk gallery background"
+            alt="KODESK coworking space in Baner Pune"
             fill
             className="object-cover object-center"
           />
@@ -79,7 +79,7 @@ export default function GalleryPage() {
             Our Gallery
           </p>
           <h1 className="mt-6 max-w-3xl font-[family:var(--font-kodchasan)] text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Take a visual tour of our premium workspace
+            Explore KODESK Workspaces in Baner, Pune
           </h1>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link

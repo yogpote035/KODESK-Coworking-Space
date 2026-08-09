@@ -19,7 +19,7 @@ const showcaseOrder = [
   { slug: "virtual-office", title: "Virtual Office" },
   { slug: "podcast-studio", title: "Podcast Studio" },
   { slug: "day-pass", title: "Day Pass" },
-  { slug: "private-cabin", title: "Private Cabin" },
+  { slug: "private-cabin", title: "Private Office" },
 ] as const;
 
 type ShowcaseCard = (typeof services)[number] & { title: string };
@@ -47,7 +47,7 @@ export default function ServicesPage() {
           <div className="relative min-h-[500px] sm:min-h-[560px] lg:min-h-[630px]">
             <Image
               src={servicesOverview.image}
-              alt="Kodesk services hero"
+              alt="KODESK workspace services in Baner Pune"
               fill
               priority
               className="object-cover object-center"
@@ -60,11 +60,10 @@ export default function ServicesPage() {
                   Kodesk Service
                 </p>
                 <h1 className="mt-3 text-[2.55rem] font-light tracking-[-0.03em] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.28)] sm:text-[3.4rem] lg:text-[4.15rem]">
-                  Premium Workspace Services
+                  Workspace Solutions for Modern Businesses
                 </h1>
                 <p className="mx-auto mt-4 max-w-3xl text-[0.95rem] leading-7 text-white/86 drop-shadow-[0_1px_1px_rgba(0,0,0,0.24)] sm:text-[1rem]">
-                  Everything your business needs, from flexible desks to fully
-                  managed private offices and beyond.
+                  From flexible day passes to private offices and managed workspaces, KODESK provides workspace options designed around different ways of working.
                 </p>
               </div>
             </div>
@@ -82,8 +81,7 @@ export default function ServicesPage() {
             Our Services
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-[0.95rem] leading-8 text-slate-600 sm:text-base">
-            Ten carefully crafted workspace options from drop-in day passes to
-            fully managed offices designed to grow with your business.
+            Explore coworking, dedicated desks, private offices, meeting rooms and flexible workspace solutions in Baner, Pune.
           </p>
         </div>
 
@@ -118,7 +116,7 @@ export default function ServicesPage() {
 
           <div className="relative px-6 py-14 text-center text-white sm:px-10 sm:py-20">
             <h2 className="text-2xl font-light tracking-tight sm:text-[2.15rem]">
-              Discover a Workspace That Fits Your Business
+              Ready to Find Your Ideal Workspace?
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-white/84 sm:text-base">
               Book a free tour and our workspace consultants will help you find
