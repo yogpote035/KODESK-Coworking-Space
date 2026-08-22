@@ -146,9 +146,26 @@ const serviceStrip = [
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeAmenity, setActiveAmenity] = useState(0);
+  const [tourMessage, setTourMessage] = useState("");
+  const [sendingTour, setSendingTour] = useState(false);
   const { pricing, media, settings } = usePublicCms();
   const contact = resolvePublicContact(settings);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const submitTour = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    setSendingTour(true);
+    setTourMessage("Sending your enquiry…");
+    const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: data.get("name"), phone: data.get("phone"), email: data.get("email"), interestedIn: data.get("workspace"), message: "Free tour request from the KODESK homepage." }) });
+    const result = await response.json().catch(() => ({ error: "We could not send your enquiry." })) as { success?: boolean; error?: string };
+    setSendingTour(false);
+    if (!response.ok || !result.success) { setTourMessage(result.error ?? "We could not send your enquiry. Please try again."); return; }
+    form.reset();
+    setTourMessage("Thank you! Your enquiry has been sent. Our KODESK team will contact you shortly.");
+    window.setTimeout(() => setTourMessage(""), 2000);
+  };
 
   useIsomorphicLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -292,31 +309,41 @@ export default function Home() {
         {/* Booking bar */}
         <div className="px-4 pb-10 sm:pb-12">
           <div className="mx-auto max-w-5xl">
-            <div data-hero-item className="grid grid-cols-1 gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:grid-cols-2 lg:flex lg:items-center">
+            <form onSubmit={submitTour} data-hero-item className="grid grid-cols-1 gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:grid-cols-2 lg:flex lg:items-center">
               <input
                 type="text"
+                name="name"
+                required
                 placeholder="Full Name"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
               <input
-                type="email"
+                type="tel"
+                name="phone"
+                required
                 placeholder="Phone / WhatsApp"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
               <input
                 type="email"
+                name="email"
+                required
                 placeholder="Email"
                 className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
               />
-              <input
-                type="text"
-                placeholder="Workspace Required"
-                className="min-w-0 flex-1 rounded-xl border border-white/20 bg-white/15 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:bg-white/20 focus:outline-none transition"
-              />
-              <button className="shrink-0 rounded-xl bg-[#141f49] px-7 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#1c2d63] active:scale-[0.98] transition sm:col-span-2 lg:col-span-1">
-                Book a Free Tour
+              <select name="workspace" required defaultValue="" className="min-w-0 flex-1 appearance-none rounded-xl border border-[#f2c18e]/70 bg-[#182553]/80 px-4 py-3 text-sm font-medium text-white shadow-inner outline-none transition focus:border-[#f6ae59] focus:ring-2 focus:ring-[#f6ae59]/35">
+                <option value="" disabled className="bg-[#182553] text-white/70">Workspace Required</option>
+                {homeServices.map((service) => <option key={service.title} value={service.title} className="bg-[#182553] text-white">{service.title}</option>)}
+                <option value="Dedicated Desk" className="bg-[#182553] text-white">Dedicated Desk</option>
+                <option value="Private Office" className="bg-[#182553] text-white">Private Office</option>
+                <option value="Day Pass" className="bg-[#182553] text-white">Day Pass</option>
+                <option value="Other" className="bg-[#182553] text-white">Other / Not sure yet</option>
+              </select>
+              <button type="submit" disabled={sendingTour} className="shrink-0 rounded-xl bg-[#141f49] px-7 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1c2d63] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 sm:col-span-2 lg:col-span-1">
+                {sendingTour ? "Sending…" : "Book a Free Tour"}
               </button>
-            </div>
+              {tourMessage ? <p role="status" className={`sm:col-span-2 lg:col-span-5 text-center text-sm font-medium ${tourMessage.startsWith("Thank") || tourMessage.startsWith("Sending") ? "text-emerald-200" : "text-rose-200"}`}>{tourMessage}</p> : null}
+            </form>
           </div>
         </div>
       </section>

@@ -77,6 +77,7 @@ export default function ContactPage() {
     form.reset();
     setSubmitting(false);
     setFormMessage("Thank you. Your enquiry has been received.");
+    window.setTimeout(() => setFormMessage(""), 4000);
   };
 
   return (
