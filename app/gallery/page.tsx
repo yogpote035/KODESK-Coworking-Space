@@ -11,6 +11,7 @@ import privateOfficeImage from "@/assets/images/our gallery/private office.png";
 import creativeImage from "@/assets/images/our gallery/creative.png";
 import workspaceImage from "@/assets/images/our gallery/Workspace.png";
 import { ArcMenu } from "@/components/ui/arcmenu";
+import { usePublicCms } from "@/lib/cms/client";
 
 const filters = [
   { label: "All", value: "all" },
@@ -55,11 +56,16 @@ const galleryItems = [
 
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]["value"]>("all");
+  const { media } = usePublicCms();
+
+  const managedGalleryItems = media
+    .filter((item) => item.category === "gallery")
+    .map((item) => ({ title: item.name, alt: item.alt_text || item.name, image: item.public_url, category: item.gallery_category || "workspace" }));
 
   const visibleItems =
     activeFilter === "all"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeFilter);
+      ? (managedGalleryItems.length ? managedGalleryItems : galleryItems)
+      : (managedGalleryItems.length ? managedGalleryItems : galleryItems).filter((item) => item.category === activeFilter);
 
   return (
     <div className="bg-[#f2f2ef]">
@@ -129,13 +135,7 @@ export default function GalleryPage() {
               className="group relative overflow-hidden rounded-[1.2rem] bg-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.1)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.18)]"
             >
               <div className="relative aspect-[16/11] overflow-hidden bg-slate-100">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover transition duration-700 ease-out group-hover:scale-110 group-hover:brightness-90"
-                />
+                {typeof item.image === "string" ? <img src={item.image} alt={item.title} className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-110 group-hover:brightness-90" /> : <Image src={item.image} alt={item.title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover transition duration-700 ease-out group-hover:scale-110 group-hover:brightness-90" />}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/18 to-transparent opacity-85 transition duration-500 group-hover:from-black/85 group-hover:via-black/30" />
                 <div className="absolute inset-0 flex items-end p-5 sm:p-6">
                   <span className="max-w-[90%] translate-y-2 text-lg font-semibold text-white opacity-100 transition duration-500 group-hover:translate-y-0 lg:opacity-0 lg:group-hover:opacity-100 sm:text-xl">

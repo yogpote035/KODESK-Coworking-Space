@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/images/contact/main.png";
@@ -11,6 +13,8 @@ import { services } from "@/data/service";
 import keybenefitIcon from "@/assets/icons/services/keybenefits.svg";
 import Community from "@/assets/images/about/Community.png"
 import { business } from "@/lib/business";
+import { useState } from "react";
+import { usePublicCms } from "@/lib/cms/client";
 
 const contactCards = [
   {
@@ -54,6 +58,26 @@ const contactFaqs = [
 ];
 
 export default function ContactPage() {
+  const [formMessage, setFormMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const { settings } = usePublicCms();
+  const contact = settings.contact_information ?? { phone: business.phone, email: business.email, address: business.address };
+  const hours = settings.business_hours?.reception ?? business.receptionHours;
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    setSubmitting(true);
+    setFormMessage("Sending your enquiry…");
+    const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: data.get("name"), phone: data.get("phone"), email: data.get("email"), interestedIn: data.get("interest"), message: data.get("message") }) });
+    const result = await response.json().catch(() => ({ error: "We could not send your enquiry." })) as { success?: boolean; error?: string };
+    if (!response.ok || !result.success) { setFormMessage(result.error ?? "We could not send your enquiry. Please try again."); setSubmitting(false); return; }
+    form.reset();
+    setSubmitting(false);
+    setFormMessage("Thank you. Your enquiry has been received.");
+  };
+
   return (
     <div>
       <section className="relative isolate overflow-hidden pt-2">
@@ -83,7 +107,7 @@ export default function ContactPage() {
                 Book a Free Tour
               </Link>
               <Link
-                href="/pricing"
+                href="whatsapp://send?phone=++91 9359805818&text=Hello Kodesk, I would like to know more about your coworking space and managed office options."
                 className="inline-flex items-center justify-center rounded-[12px] border-2 border-white/50 bg-transparent px-12 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 WhatsApp Us
@@ -100,7 +124,7 @@ export default function ContactPage() {
 
       <section className="mx-auto w-full max-w-5xl px-12 py-16 sm:px-6 lg:px-12">
         <div className="grid gap-8 md:grid-cols-4 ">
-          {contactCards.map((card) => (
+          {[...contactCards.slice(0, 1).map((card) => ({ ...card, description: contact.address })), { ...contactCards[1], description: contact.phone }, { ...contactCards[2], description: contact.email }, { ...contactCards[3], description: hours }].map((card) => (
             <article
               key={card.title}
               className="group rounded-[12px] border border-slate-200 bg-white p-6 transition duration-300 ease-out hover:-translate-y-1 hover:border-transparent hover:bg-gradient-to-b hover:from-[#1b2c70] hover:to-[#152055] hover:shadow-[0_30px_60px_rgba(15,23,42,0.18)]"
@@ -126,13 +150,15 @@ export default function ContactPage() {
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-start">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
             <p className="text-[25px]  ">Send Us a Message</p>
-            <form className="mt-10 space-y-5">
+            <form onSubmit={handleSubmit} className="mt-10 space-y-5">
               <div>
                 <label className="text-sm font-medium text-slate-700">
                   Name
                 </label>
                 <input
                   type="text"
+                  name="name"
+                  required
                   placeholder="Rahul Pradeep Despande"
                   className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
                 />
@@ -143,7 +169,9 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="tel"
-                  placeholder={business.phone}
+                  name="phone"
+                  required
+                  placeholder={contact.phone}
                   className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
                 />
               </div>
@@ -154,7 +182,9 @@ export default function ContactPage() {
                 </label>
                 <input
                   type="email"
-                  placeholder={business.email}
+                  name="email"
+                  required
+                  placeholder={contact.email}
                   className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
                 />
               </div>
@@ -163,7 +193,7 @@ export default function ContactPage() {
                 <label className="text-sm font-medium text-slate-700">
                   Interested In
                 </label>
-                <select className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10">
+                <select name="interest" className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10">
                   <option value="">Select a workspace</option>
                   {services.map((service) => (
                     <option key={service.slug} value={service.slug}>
@@ -178,6 +208,7 @@ export default function ContactPage() {
                   Message
                 </label>
                 <textarea
+                  name="message"
                   rows={5}
                   placeholder="Tell us about your requirement"
                   className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10"
@@ -186,10 +217,12 @@ export default function ContactPage() {
 
               <button
                 type="submit"
+                disabled={submitting}
                 className="inline-flex w-full items-center justify-center rounded-[0.75rem] bg-[#1b2c70] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(20,43,119,0.28)] transition hover:bg-[#16245d]"
               >
-                Send Enquiry
+                {submitting ? "Sending Enquiry…" : "Send Enquiry"}
               </button>
+              {formMessage ? <p role="status" className={`text-center text-sm font-medium ${formMessage.startsWith("Thank") || formMessage.startsWith("Sending") ? "text-green-700" : "text-red-700"}`}>{formMessage}</p> : null}
             </form>
           </div>
 

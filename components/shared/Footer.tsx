@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import facebookIcon from "@/assets/icons/footer/facebook.svg";
@@ -6,6 +8,7 @@ import linkedinIcon from "@/assets/icons/footer/linkedin.svg";
 import whatsappIcon from "@/assets/icons/footer/whatsapp.svg";
 import kodeskLogo from "@/assets/icons/navbar/Services/kodesklogo.png";
 import { business } from "@/lib/business";
+import { usePublicCms } from "@/lib/cms/client";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -25,14 +28,17 @@ const services = [
   { href: "/services/day-pass", label: "Day Pass" },
 ];
 
-const socialLinks = [
-  { label: "Instagram", href: business.socialLinks.instagram, icon: instagramIcon },
-  { label: "WhatsApp", href: business.socialLinks.whatsapp, icon: whatsappIcon },
-  { label: "Facebook", href: business.socialLinks.facebook, icon: facebookIcon },
-  { label: "LinkedIn", href: business.socialLinks.linkedin, icon: linkedinIcon },
-];
-
 export function Footer() {
+  const { settings } = usePublicCms();
+  const contact = settings.contact_information ?? { phone: business.phone, email: business.email, address: business.address };
+  const hours = settings.business_hours?.reception ?? business.receptionHours;
+  const social = { ...business.socialLinks, ...settings.social_links };
+  const socialLinks = [
+    { label: "Instagram", href: social.instagram, icon: instagramIcon },
+    { label: "WhatsApp", href: social.whatsapp, icon: whatsappIcon },
+    { label: "Facebook", href: social.facebook, icon: facebookIcon },
+    { label: "LinkedIn", href: social.linkedin, icon: linkedinIcon },
+  ];
   return (
     <footer className="border-t border-white/10 bg-[#142050] text-white">
       <div className="mx-auto w-full max-w-[1120px] px-6 pb-8 pt-14 sm:px-8 lg:px-6">
@@ -73,16 +79,16 @@ export function Footer() {
             <h2 className="text-[1.05rem] font-medium text-white">Contact</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
               <li>
-                <a className="transition hover:text-white" href={business.phoneHref}>{business.phone}</a>
+                <a className="transition hover:text-white" href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a>
               </li>
               <li>
-                <a className="transition hover:text-white" href={business.emailHref}>{business.email}</a>
+                <a className="transition hover:text-white" href={`mailto:${contact.email}`}>{contact.email}</a>
               </li>
               <li>
-                <span>{business.address}</span>
+                <span>{contact.address}</span>
               </li>
             </ul>
-            <p className="mt-4 text-[0.95rem] text-white/90">Reception: {business.receptionHours}</p>
+            <p className="mt-4 text-[0.95rem] text-white/90">Reception: {hours}</p>
           </div>
         </div>
 

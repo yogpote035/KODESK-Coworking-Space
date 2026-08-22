@@ -1,0 +1,20 @@
+"use client";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { isSupabaseConfigured, supabase } from "../../lib/supabase";
+import type { AdminProfile } from "../../lib/types";
+import { Icon } from "./icons";
+
+const nav = [{ href: "/dashboard", label: "Dashboard", icon: "grid" }, { href: "/enquiries", label: "Enquiries", icon: "inbox" }, { href: "/pricing", label: "Pricing", icon: "tag" }, { href: "/media", label: "Media", icon: "image" }, { href: "/services", label: "Services", icon: "briefcase" }, { href: "/settings", label: "Settings", icon: "settings" }] as const;
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname(); const router = useRouter(); const [profile, setProfile] = useState<AdminProfile | null>(null); const [ready, setReady] = useState(false); const [menu, setMenu] = useState(false); const [loggingOut, setLoggingOut] = useState(false);
+  useEffect(() => { let active = true; const check = async () => { if (!supabase) { setReady(true); return; } const { data } = await supabase.auth.getUser(); if (!data.user) { router.replace("/login"); return; } const result = await supabase.from("admin_profiles").select("id,email,role,is_active").eq("id", data.user.id).maybeSingle(); if (active) { setProfile(result.data as AdminProfile | null); setReady(true); } }; void check(); return () => { active = false; }; }, [router]);
+  useEffect(() => { document.body.style.overflow = menu ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [menu]);
+  const logout = async () => { setLoggingOut(true); await supabase?.auth.signOut(); router.replace("/login"); router.refresh(); };
+  if (!isSupabaseConfigured) return <main className="access-state"><h1>Supabase is not configured</h1><p>Add the browser-safe Supabase URL and publishable key, then restart the admin app.</p></main>;
+  if (!ready) return <main className="app-loading"><div className="brand-mark">K</div><p>Preparing your workspace</p></main>;
+  if (!profile?.is_active || profile.role !== "admin") return <main className="access-state"><span className="brand-mark">K</span><h1>Administrator access required</h1><p>This signed-in account has not been authorized for the KODESK management dashboard.</p><button className="button button-primary" onClick={logout}>Sign out</button></main>;
+  const sidebar = <aside className={`sidebar ${menu ? "is-open" : ""}`}><Link href="/dashboard" className="brand" onClick={() => setMenu(false)}><span className="brand-mark">K</span><span><b>KODESK</b><small>Management</small></span></Link><nav aria-label="Main navigation">{nav.map((item) => <Link key={item.href} href={item.href} className={pathname === item.href ? "active" : ""} onClick={() => setMenu(false)}><Icon name={item.icon}/><span>{item.label}</span></Link>)}</nav><div className="sidebar-bottom"><div className="profile-chip"><span>{profile.email.slice(0, 1).toUpperCase()}</span><div><b>{profile.email.split("@")[0]}</b><small>Administrator</small></div></div><button className="nav-logout" onClick={logout} disabled={loggingOut}><Icon name="logout"/>{loggingOut ? "Signing out…" : "Logout"}</button></div></aside>;
+  return <div className="admin-app">{menu && <button className="drawer-overlay" aria-label="Close navigation" onClick={() => setMenu(false)} />}{sidebar}<div className="admin-main"><header className="topbar"><button className="mobile-menu" aria-label="Open navigation" onClick={() => setMenu(true)}><Icon name="menu"/></button><span className="mobile-wordmark">KODESK</span><a className="website-link" href={process.env.NEXT_PUBLIC_PUBLIC_WEBSITE_URL ?? "https://kodesk-coworking-space.vercel.app"} target="_blank" rel="noreferrer">View website <Icon name="external"/></a></header><main className="page-content">{children}</main></div></div>;
+}

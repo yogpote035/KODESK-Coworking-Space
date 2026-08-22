@@ -22,6 +22,7 @@ import dedicatedImg from "@/assets/images/Services/DedicatedDesk.png";
 import coworkingCutImg from "@/assets/images/Services/cut/Coworking.png";
 import managedCutImg from "@/assets/images/Services/cut/Managed.png";
 import flexibleCutImg from "@/assets/images/Services/cut/Flexible Sitting.png";
+import { priceLabel, usePublicCms } from "@/lib/cms/client";
 const homeServices = [
   {
     title: "Coworking Space",
@@ -144,6 +145,7 @@ const serviceStrip = [
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeAmenity, setActiveAmenity] = useState(0);
+  const { pricing, media } = usePublicCms();
   const rootRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
@@ -264,7 +266,7 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
         <img
-          src={heroImage.src}
+          src={media.find((item) => item.category === "hero")?.public_url || heroImage.src}
           alt=""
           className="absolute inset-0 -z-10 h-full w-full object-cover"
           style={{ objectPosition: "50% 80%" }}
@@ -491,6 +493,7 @@ export default function Home() {
                   sizes="(max-width: 1024px) 100vw, 540px"
                   data-fade
                   className="h-auto w-full rounded-[10px] object-cover"
+                  style={{ width: "100%", height: "auto" }}
                 />
 
 
@@ -690,7 +693,7 @@ export default function Home() {
               A reserved workspace designed for professionals who need consistency, productivity, and a dedicated business setup.
             </p>
             <p className="mt-6 text-sm font-semibold text-slate-600">
-              ₹7,499 / month
+              {priceLabel(pricing, "dedicated_desk", "₹7,499 / month")}
             </p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-slate-400">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
@@ -717,7 +720,7 @@ export default function Home() {
             <p className="mt-2 text-sm leading-7 text-white/70">
               Custom office solutions for growing enterprises requiring scalable infrastructure and premium business facilities.
             </p>
-            <p className="mt-6 text-sm font-semibold text-white/80">Contact Sales for custom pricing</p>
+            <p className="mt-6 text-sm font-semibold text-white/80">{priceLabel(pricing, "managed_office", "Request a Quote")}</p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-white/40">Features</p>
             <ul className="mt-3 flex-1 space-y-2">
               {["Custom office setup", "Dedicated support team", "Branding options", "Conference room access", "IT infrastructure", "Premium lounge access"].map((f) => (
@@ -744,7 +747,7 @@ export default function Home() {
               Premium fully furnished private cabins for startups and teams needing privacy, comfort, and a professional environment.
             </p>
             <p className="mt-6 text-sm font-semibold text-slate-600">
-              Contact us for pricing
+              {priceLabel(pricing, "private_office", "Request Pricing")}
             </p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-slate-400">Features</p>
             <ul className="mt-3 flex-1 space-y-2">

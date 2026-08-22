@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KODESK Public Website
+
+The customer-facing KODESK coworking website and its separate Supabase-backed admin application live in this repository.
+
+## Supabase production setup
+
+1. Create a Supabase project and run [202608210001_kodesk_cms.sql](supabase/migrations/202608210001_kodesk_cms.sql) in its SQL editor.
+2. Copy `.env.example` to `.env.local` and add only your public Supabase URL and anon key. `SUPABASE_SERVICE_ROLE_KEY` is server-only and must never use the `NEXT_PUBLIC_` prefix.
+3. Configure the same public Supabase URL and anon key in the separate `admin/` deployment.
+4. Create the first administrator manually in Supabase Auth and add its ID/email to `public.admin_profiles` as an active `admin`.
+
+The public contact form writes enquiries to Supabase and displays a truthful error if the database is unavailable. Public pricing, active hero media, active gallery media, footer contact data, and social settings retain safe static fallbacks when no Supabase data is available.
+
+See [admin/README.md](admin/README.md) for separate admin-app setup and deployment.
 
 ## Getting Started
 

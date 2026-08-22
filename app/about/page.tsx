@@ -75,7 +75,7 @@ export default function AboutPage() {
   return (
     <div className="bg-[#f2f2ef]">
       <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0 ">
+          <div className="absolute inset-0 ">
           <Image
             src={heroImage}
             alt="Kodesk office interior"
@@ -88,10 +88,8 @@ export default function AboutPage() {
         </div>
 
         <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-7xl flex-col items-center justify-center px-4 pb-20 pt-16 text-center sm:px-6 lg:px-8">
-          <p className="mb-4 mt-38 text-sm font-medium text-white/80">
-            Kodesk About
-          </p>
-          <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl mt-8">
+
+          <h1 className="max-w-4xl mt-38 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl mt-8">
             About KODESK
           </h1>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-white/78 sm:text-base mt-19">
@@ -216,8 +214,8 @@ export default function AboutPage() {
 
         <div className="mt-16 bg-[linear-gradient(90deg,#152153_0%,#3555ff_55%,#5d63d1_100%)] py-10 text-white">
           <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 text-center sm:grid-cols-2 lg:grid-cols-4 sm:px-6 lg:px-8">
-            {stats.map((stat) => (
-              <div key={stat.label}>
+            {stats.map((stat, index) => (
+              <div key={`${stat.label}-${index}`}>
                 <p className="text-4xl font-medium tracking-tight">{stat.value}</p>
                 <p className="mt-2 text-sm text-white/75">{stat.label}</p>
               </div>
