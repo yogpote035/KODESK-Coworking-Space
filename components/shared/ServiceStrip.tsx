@@ -27,6 +27,24 @@ function ChevronButton({ direction }: { direction: "left" | "right" }) {
   );
 }
 
+function FallbackServiceIcon({ slug }: { slug: string }) {
+  const paths = {
+    "meeting-room": <><path d="M4 19h16M6 19v-7h12v7M9 12V7h6v5M12 4v3" /></>,
+    "private-cabin": <><path d="M5 20V5h14v15M9 20v-5h6v5M8 9h.01M16 9h.01" /></>,
+    "flexible-seating": <><path d="M7 19v-4a5 5 0 0110 0v4M5 19h14M9 8a3 3 0 116 0v2H9V8z" /></>,
+  } as const;
+
+  const icon = paths[slug as keyof typeof paths];
+
+  return (
+    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-[#1f2d62]">
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        {icon ?? <path d="M6 19V7h12v12M9 11h.01M15 11h.01M9 15h.01M15 15h.01" />}
+      </svg>
+    </span>
+  );
+}
+
 export function ServiceStrip() {
   const pathname = usePathname();
   const rowRef = useRef<HTMLDivElement | null>(null);
@@ -72,7 +90,7 @@ export function ServiceStrip() {
                     <Image src={item.icon} alt="" className="h-10 w-10 object-contain" />
                   </span>
                 ) : (
-                  <span className="h-10 w-10" aria-hidden="true" />
+                  <FallbackServiceIcon slug={item.slug} />
                 )}
                 <span
                   className={`text-[0.88rem] font-medium leading-tight sm:text-[0.95rem] ${

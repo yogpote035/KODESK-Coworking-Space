@@ -21,10 +21,12 @@ export function Navbar() {
   const pathname = usePathname();
   const isServiceRoute = pathname === "/services" || pathname.startsWith("/services/");
   const [showServiceStrip, setShowServiceStrip] = useState(isServiceRoute);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setShowServiceStrip(isServiceRoute);
+    setMobileMenuOpen(false);
   }, [isServiceRoute]);
 
   useEffect(() => {
@@ -124,10 +126,30 @@ export function Navbar() {
 
           <Link
             href="/contact"
-            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[0.6rem] gradient-card px-3 py-2 text-xs font-medium text-white shadow-[0_12px_24px_rgba(36,49,109,0.22)] sm:px-5 sm:py-3 sm:text-sm"
+            className="hidden shrink-0 items-center justify-center whitespace-nowrap rounded-[0.6rem] gradient-card px-5 py-3 text-sm font-medium text-white shadow-[0_12px_24px_rgba(36,49,109,0.22)] lg:inline-flex"
           >
             Book a Tour
           </Link>
+
+          <button
+            type="button"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition lg:hidden ${
+              servicesNavbarOpen
+                ? "border-slate-200 bg-slate-100 text-[#1f2d62]"
+                : "border-white/25 bg-white/10 text-white"
+            }`}
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
+              {mobileMenuOpen ? (
+                <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+              )}
+            </svg>
+          </button>
         </div>
 
         <div
@@ -147,6 +169,67 @@ export function Navbar() {
         </div>
 
       </div>
+
+      {mobileMenuOpen ? (
+        <div className="fixed inset-0 z-[60] lg:hidden">
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            className="absolute inset-0 cursor-default bg-[#08102d]/55 backdrop-blur-[2px]"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <aside
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="absolute bottom-3 right-3 top-3 flex w-[min(21rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-[1.5rem] border border-white/20 bg-[linear-gradient(160deg,#14245a_0%,#0c1537_62%,#101a40_100%)] p-5 text-white shadow-[0_28px_80px_rgba(4,10,30,0.45)]"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-5">
+              <span className="text-sm font-semibold tracking-[0.16em] text-white/70">KODESK</span>
+              <button
+                type="button"
+                aria-label="Close navigation menu"
+                onClick={() => setMobileMenuOpen(false)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white transition hover:bg-white/15"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            <nav className="mt-5 space-y-2" aria-label="Mobile navigation">
+              {navItems.map((item, index) => {
+                const active = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-medium transition ${
+                      active ? "bg-white text-[#17275f] shadow-[0_12px_26px_rgba(0,0,0,0.16)]" : "text-white/85 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <span className={`text-xs ${active ? "text-[#f28c28]" : "text-white/45"}`}>0{index + 1}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="mt-auto border-t border-white/10 pt-5">
+              <p className="text-xs leading-5 text-white/55">Find the workspace that works for you.</p>
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-4 flex items-center justify-center rounded-xl gradient-card px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(0,0,0,0.22)]"
+              >
+                Book a Free Tour
+              </Link>
+            </div>
+          </aside>
+        </div>
+      ) : null}
     </header>
   );
 }
