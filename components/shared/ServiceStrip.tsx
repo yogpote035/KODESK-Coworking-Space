@@ -73,29 +73,33 @@ export function ServiceStrip() {
             const href = buildHref(item.slug);
             const active =
               pathname === href ||
-              pathname.startsWith(`${href}/`)  
+              pathname.startsWith(`${href}/`)
 
             return (
               <Link
                 key={item.slug}
                 href={href}
-                className={`flex min-w-[108px] flex-col items-center gap-2   px-3 py-3 text-center transition hover:border-[#2453f5] hover:bg-slate-50 sm:min-w-[132px] ${
-                  active
+                className={`flex min-w-[108px] flex-col items-center gap-2   px-3 py-3 text-center transition hover:border-[#2453f5] hover:bg-slate-50 sm:min-w-[132px] ${active
                     ? "text-[#2453f5] shadow-[0_10px_28px_rgba(36,49,109,0.08)]"
                     : "text-slate-800"
-                }`}
+                  }`}
               >
                 {"icon" in item && item.icon ? (
                   <span className="flex h-10 w-10 items-center justify-center">
-                    <Image src={item.icon} alt="" className="h-10 w-10 object-contain" />
+                    <img
+                      src={item.icon.src}
+                      alt=""
+                      className="h-10 w-10 object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </span>
                 ) : (
                   <FallbackServiceIcon slug={item.slug} />
                 )}
                 <span
-                  className={`text-[0.88rem] font-medium leading-tight sm:text-[0.95rem] ${
-                    active ? "border-b border-current pb-0.5" : ""
-                  }`}
+                  className={`text-[0.88rem] font-medium leading-tight sm:text-[0.95rem] ${active ? "border-b border-current pb-0.5" : ""
+                    }`}
                 >
                   {item.label}
                 </span>
