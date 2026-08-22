@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import serviceLogo from "@/assets/icons/navbar/Services/kodesklogo.png";
 import servicePageLogo from "@/assets/icons/services/kodeskserviceslogo.png";
@@ -21,10 +21,24 @@ export function Navbar() {
   const pathname = usePathname();
   const isServiceRoute = pathname === "/services" || pathname.startsWith("/services/");
   const [showServiceStrip, setShowServiceStrip] = useState(isServiceRoute);
+  const navbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setShowServiceStrip(isServiceRoute);
   }, [isServiceRoute]);
+
+  useEffect(() => {
+    if (!showServiceStrip) return;
+
+    const closeWhenClickingOutside = (event: PointerEvent) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
+        setShowServiceStrip(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", closeWhenClickingOutside);
+    return () => document.removeEventListener("pointerdown", closeWhenClickingOutside);
+  }, [showServiceStrip]);
 
   const servicesNavbarOpen = isServiceRoute && showServiceStrip;
 
@@ -34,17 +48,17 @@ export function Navbar() {
 
   return (
     <header className="absolute left-0 right-0 top-0 z-50 px-3 pt-3 sm:px-4">
-      <div className={`${wrapperClasses} ${servicesNavbarOpen ? "pb-2" : ""}`}>
-        <div className="flex min-h-[2px] items-center justify-between gap-4 lg:min-h-[4rem]">
+      <div ref={navbarRef} className={`${wrapperClasses} ${servicesNavbarOpen ? "pb-2" : ""}`}>
+        <div className="flex min-h-[2px] items-center justify-between gap-2 lg:min-h-[4rem] lg:gap-4">
           <Link href="/" className="flex shrink-0 items-center">
             <span className={`flex flex-col items-start leading-none ${servicesNavbarOpen ? "text-[#1f2d62]" : "text-white"}`}>
               <Image
                 src={isServiceRoute ? servicePageLogo : serviceLogo}
                 alt="Kodesk"
                 priority
-                className=" w-45 px-8 py-2  ml-2 sm:h-9 mt-3 "
+                className="mt-0 h-auto w-[126px] px-0 py-0 sm:ml-2 sm:mt-3 sm:w-45 sm:px-8 sm:py-2 sm:h-9"
               />
-                <span className="mt-1 tracking-[0.1em] px-10 sm:text-[0.42rem]">
+                <span className="mt-1 px-0 text-[0.34rem] tracking-[0.1em] sm:px-10 sm:text-[0.42rem]">
                   ACHIEVING SUCCESS TOGETHER
                 </span>
             </span>
@@ -110,7 +124,7 @@ export function Navbar() {
 
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded-[0.6rem] gradient-card px-4 py-2.5 text-sm font-medium text-white shadow-[0_12px_24px_rgba(36,49,109,0.22)] sm:px-5 sm:py-3"
+            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-[0.6rem] gradient-card px-3 py-2 text-xs font-medium text-white shadow-[0_12px_24px_rgba(36,49,109,0.22)] sm:px-5 sm:py-3 sm:text-sm"
           >
             Book a Tour
           </Link>
