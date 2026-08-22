@@ -284,12 +284,19 @@ export default function Home() {
 
       {/* ── Hero ── */}
       <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
-        <img
-          src={media.find((item) => item.category === "hero")?.public_url || heroImage.src}
-          alt=""
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={media.find((item) => item.category === "hero")?.public_url || heroImage.src}
+          aria-hidden="true"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
           style={{ objectPosition: "50% 80%" }}
-        />
+        >
+          <source src="/media/kodesk-intro.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/65 via-black/40 to-black/70" />
 
         {/* Hero text */}
