@@ -355,28 +355,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Service Strip (infinite marquee) ── */}
+      {/* ── Service Strip — swipeable on phones, marquee on larger screens ── */}
       <div
-        className="overflow-hidden py-4"
+        className="py-4"
         style={{ background: "linear-gradient(90deg, #121E46 0%, #3651AD 100%)" }}
       >
-        <div
-          style={{
-            display: "flex",
-            width: "max-content",
-            animation: "marquee 30s linear infinite",
-          }}
-        >
-          {[...serviceStrip, ...serviceStrip].map((item, i) => (
+        <div className="flex touch-pan-x snap-x snap-mandatory overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {serviceStrip.map((item) => (
             <Link
-              key={i}
+              key={item.slug}
               href={`/services/${item.slug}`}
-              className="flex shrink-0 items-center whitespace-nowrap px-6 text-sm font-medium text-white/75 transition hover:text-white"
+              className="flex shrink-0 snap-start items-center whitespace-nowrap px-5 text-sm font-medium text-white/85 transition active:text-white"
             >
-              <span className="mr-5 select-none text-white/30">✦</span>
+              <span className="mr-4 select-none text-white/30">✦</span>
               {item.label}
             </Link>
           ))}
+        </div>
+        <div className="hidden overflow-hidden md:block">
+          <div
+            style={{
+              display: "flex",
+              width: "max-content",
+              animation: "marquee 30s linear infinite",
+            }}
+          >
+            {[...serviceStrip, ...serviceStrip].map((item, i) => (
+              <Link
+                key={i}
+                href={`/services/${item.slug}`}
+                className="flex shrink-0 items-center whitespace-nowrap px-6 text-sm font-medium text-white/75 transition hover:text-white"
+              >
+                <span className="mr-5 select-none text-white/30">✦</span>
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -83,8 +83,8 @@ export function ServiceDetail({ service, heading, heroDescription }: { service: 
               </div>
             </article>
 
-            <aside className="lg:pt-2 ">
-              <div className="gradient-card relative overflow-hidden rounded-[18px] mx-18 h-[520px] text-white sm:p-10">
+            <aside className="lg:pt-2">
+              <div className="gradient-card relative min-h-[420px] overflow-hidden rounded-[18px] p-6 text-white sm:min-h-0 sm:h-[520px] sm:p-10">
                 {/* Content */}
                 <h3 className="relative z-10 text-xl font-semibold tracking-tight">
                   {content.audienceTitle}
@@ -98,7 +98,7 @@ export function ServiceDetail({ service, heading, heroDescription }: { service: 
 
                 <Link
                   href="/contact"
-                  className="relative z-10 mt-10 mx-auto flex w-fit px-18  items-center justify-center rounded-xl border border-white/30 bg-white/10  py-3 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/20"
+                  className="relative z-10 mt-10 flex w-full items-center justify-center rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/20 sm:mx-auto sm:w-fit sm:px-18"
                 >
                   Enquire Now
                 </Link>
@@ -116,16 +116,16 @@ export function ServiceDetail({ service, heading, heroDescription }: { service: 
           <h2 className="mt-3 text-3xl font-medium tracking-tight text-slate-900 sm:text-[2.1rem]">
             Features & Inclusions
           </h2>
-          <div className="mt-15 grid gap-8 mx-15 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 sm:mt-15 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
             {content.features.map((item) => (
               <article
                 key={item.title}
-                className="rounded-[1rem] border border-white/70 bg-white px-2 py-8  text-slate-900 shadow-[0_12px_30px_rgba(10,16,40,0.05)]"
+                className="rounded-[1rem] border border-white/70 bg-white px-5 py-8 text-slate-900 shadow-[0_12px_30px_rgba(10,16,40,0.05)] sm:px-6"
               >
                 <h3 className="text-lg font-medium tracking-tight">
                   {item.title}
                 </h3>
-                <div className="mx-auto mt-3 h-px w-62 bg-gradient-to-r   from-[#FC7B1B] to-[#2947AA]" />
+                <div className="mx-auto mt-3 h-px w-56 max-w-full bg-gradient-to-r from-[#FC7B1B] to-[#2947AA]" />
                 <p className="mx-auto mt-5 max-w-[25ch] text-md leading-7 text-slate-500">
                   {item.copy}
                 </p>
