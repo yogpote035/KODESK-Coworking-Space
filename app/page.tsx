@@ -23,6 +23,7 @@ import coworkingCutImg from "@/assets/images/Services/cut/Coworking.png";
 import managedCutImg from "@/assets/images/Services/cut/Managed.png";
 import flexibleCutImg from "@/assets/images/Services/cut/Flexible Sitting.png";
 import { priceLabel, usePublicCms } from "@/lib/cms/client";
+import { resolvePublicContact } from "@/lib/cms/contact";
 const homeServices = [
   {
     title: "Coworking Space",
@@ -145,7 +146,8 @@ const serviceStrip = [
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeAmenity, setActiveAmenity] = useState(0);
-  const { pricing, media } = usePublicCms();
+  const { pricing, media, settings } = usePublicCms();
+  const contact = resolvePublicContact(settings);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
@@ -875,8 +877,8 @@ export default function Home() {
                 <span className="text-lg font-bold text-slate-900">Email</span>
               </div>
               <p className="mt-3 text-sm text-slate-500">Send us a message</p>
-              <a href="mailto:hello@kodesk.com" className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
-                hello@kodesk.com
+              <a href={contact.emailHref} className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
+                {contact.email}
               </a>
             </div>
 
@@ -889,8 +891,8 @@ export default function Home() {
                 <span className="text-lg font-bold text-slate-900">Phone</span>
               </div>
               <p className="mt-3 text-sm text-slate-500">Call us directly</p>
-              <a href="tel:+919359805818" className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
-                +91 93598 05818
+              <a href={contact.phoneHref} className="mt-2 block text-sm font-medium text-[#2453f5] hover:underline">
+                {contact.phone}
               </a>
             </div>
 

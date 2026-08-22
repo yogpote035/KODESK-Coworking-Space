@@ -9,6 +9,7 @@ import whatsappIcon from "@/assets/icons/footer/whatsapp.svg";
 import kodeskLogo from "@/assets/icons/navbar/Services/kodesklogo.png";
 import { business } from "@/lib/business";
 import { usePublicCms } from "@/lib/cms/client";
+import { resolvePublicContact } from "@/lib/cms/contact";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -30,12 +31,12 @@ const services = [
 
 export function Footer() {
   const { settings } = usePublicCms();
-  const contact = settings.contact_information ?? { phone: business.phone, email: business.email, address: business.address };
+  const contact = resolvePublicContact(settings);
   const hours = settings.business_hours?.reception ?? business.receptionHours;
   const social = { ...business.socialLinks, ...settings.social_links };
   const socialLinks = [
     { label: "Instagram", href: social.instagram, icon: instagramIcon },
-    { label: "WhatsApp", href: social.whatsapp, icon: whatsappIcon },
+    { label: "WhatsApp", href: contact.whatsappHref, icon: whatsappIcon },
     { label: "Facebook", href: social.facebook, icon: facebookIcon },
     { label: "LinkedIn", href: social.linkedin, icon: linkedinIcon },
   ];
@@ -79,10 +80,10 @@ export function Footer() {
             <h2 className="text-[1.05rem] font-medium text-white">Contact</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
               <li>
-                <a className="transition hover:text-white" href={`tel:${contact.phone.replace(/\s/g, "")}`}>{contact.phone}</a>
+                <a className="transition hover:text-white" href={contact.phoneHref}>{contact.phone}</a>
               </li>
               <li>
-                <a className="transition hover:text-white" href={`mailto:${contact.email}`}>{contact.email}</a>
+                <a className="transition hover:text-white" href={contact.emailHref}>{contact.email}</a>
               </li>
               <li>
                 <span>{contact.address}</span>

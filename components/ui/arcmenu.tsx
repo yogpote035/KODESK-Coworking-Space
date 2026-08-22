@@ -8,54 +8,17 @@ import whatsapp from "@/assets/icons/arcmenu/whatsap.png"
 import notinfo from "@/assets/icons/arcmenu/not.png"
 import phone from "@/assets/icons/arcmenu/phone.png"
 import Image from "next/image";
-import { business } from "@/lib/business";
-
-const menuItems = [
-  {
-    icon: (
-      <Image
-        src={whatsapp}
-        alt="WhatsApp"
-        width={24}
-        height={24}
-      />
-    ),
-    href: business.socialLinks.whatsapp,
-    color: "text-green-600",
-    x: -20,
-    y: -110,
-  },
-  {
-    icon: (
-      <Image
-        src={phone}
-        alt="Phone"
-        width={24}
-        height={24}
-      />
-    ),
-    href: business.phoneHref,
-    color: "text-blue-600",
-    x: -90,
-    y: -70,
-  },
-  {
-    icon: (
-      <Image
-        src={notinfo}
-        alt="Contact"
-        width={24}
-        height={24}
-      />
-    ),
-    href: "/contact",
-    color: "text-slate-700",
-    x: -115,
-    y: 10,
-  },
-];
+import { usePublicCms } from "@/lib/cms/client";
+import { resolvePublicContact } from "@/lib/cms/contact";
 export function ArcMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const { settings } = usePublicCms();
+  const contact = resolvePublicContact(settings);
+  const menuItems = [
+    { icon: <Image src={whatsapp} alt="WhatsApp" width={24} height={24} />, href: contact.whatsappHref, color: "text-green-600", x: -20, y: -110 },
+    { icon: <Image src={phone} alt="Phone" width={24} height={24} />, href: contact.phoneHref, color: "text-blue-600", x: -90, y: -70 },
+    { icon: <Image src={notinfo} alt="Contact" width={24} height={24} />, href: "/contact", color: "text-slate-700", x: -115, y: 10 },
+  ];
 
   return (
     // Floating action button in the bottom-right corner

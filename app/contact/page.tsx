@@ -15,6 +15,7 @@ import Community from "@/assets/images/about/Community.png"
 import { business } from "@/lib/business";
 import { useState } from "react";
 import { usePublicCms } from "@/lib/cms/client";
+import { resolvePublicContact } from "@/lib/cms/contact";
 
 const contactCards = [
   {
@@ -61,7 +62,7 @@ export default function ContactPage() {
   const [formMessage, setFormMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { settings } = usePublicCms();
-  const contact = settings.contact_information ?? { phone: business.phone, email: business.email, address: business.address };
+  const contact = resolvePublicContact(settings);
   const hours = settings.business_hours?.reception ?? business.receptionHours;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -106,12 +107,14 @@ export default function ContactPage() {
               >
                 Book a Free Tour
               </Link>
-              <Link
-                href="whatsapp://send?phone=++91 9359805818&text=Hello Kodesk, I would like to know more about your coworking space and managed office options."
+              <a
+                href={contact.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-[12px] border-2 border-white/50 bg-transparent px-12 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 WhatsApp Us
-              </Link>
+              </a>
             </div>
           </div>
 

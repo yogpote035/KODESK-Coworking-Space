@@ -5,6 +5,8 @@ import { Footer } from "@/components/shared/Footer";
 import { Navbar } from "@/components/shared/Navbar";
 import { business } from "@/lib/business";
 import { siteUrl } from "@/lib/seo";
+import { getPublicCmsData } from "@/lib/cms/public";
+import { resolvePublicContact } from "@/lib/cms/contact";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,13 +37,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { settings } = await getPublicCmsData();
+  const contact = resolvePublicContact(settings);
   const structuredData = [
-    { "@context": "https://schema.org", "@type": "LocalBusiness", name: business.name, url: siteUrl, telephone: business.phone, email: business.email, address: { "@type": "PostalAddress", addressLocality: "Pune", addressRegion: "Maharashtra", addressCountry: "IN" } },
+    { "@context": "https://schema.org", "@type": "LocalBusiness", name: business.name, url: siteUrl, telephone: contact.phone, email: contact.email, address: { "@type": "PostalAddress", streetAddress: contact.address, addressLocality: "Pune", addressRegion: "Maharashtra", addressCountry: "IN" } },
     { "@context": "https://schema.org", "@type": "WebSite", name: business.name, url: siteUrl },
   ];
   return (

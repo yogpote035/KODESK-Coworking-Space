@@ -104,7 +104,7 @@ insert into public.pricing (service_key, service_name, price, price_label, billi
 on conflict (service_key) do nothing;
 
 insert into public.site_settings (key, value) values
-  ('contact_information', '{"phone":"+91 93598 05818","email":"hello@kodesk.com","address":"Baner, Pune, Maharashtra"}'::jsonb),
+  ('contact_information', '{"phone":"+91 93598 05818","email":"hello@kodesk.com","address":"Baner, Pune, Maharashtra","whatsapp_number":"+91 93598 05818","whatsapp_message":"Hello KODESK, I would like to know more about your coworking space and managed office options."}'::jsonb),
   ('business_hours', '{"reception":"Mon–Sat, 8:00 AM–8:00 PM"}'::jsonb),
   ('social_links', '{"instagram":"https://www.instagram.com/kodesk_coworking/","whatsapp":"https://wa.me/919359805818","facebook":"https://www.facebook.com/kodesk.coworking/","linkedin":"https://www.linkedin.com/company/kodeskcoworking/"}'::jsonb),
   ('seo_defaults', '{"site_url":"https://kodesk-coworking-space.vercel.app"}'::jsonb)

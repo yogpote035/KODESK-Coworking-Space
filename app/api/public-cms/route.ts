@@ -3,5 +3,5 @@ import { getPublicCmsData } from "@/lib/cms/public";
 
 export async function GET() {
   const data = await getPublicCmsData();
-  return NextResponse.json(data, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } });
+  return NextResponse.json(data, { headers: { "Cache-Control": "no-store, max-age=0" } });
 }
