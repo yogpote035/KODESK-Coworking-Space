@@ -26,19 +26,22 @@ import eventNavIcon from "@/assets/icons/navbar/Services/Event.png";
 import managedNavIcon from "@/assets/icons/navbar/Services/managed.png";
 import vectorNavIcon from "@/assets/icons/navbar/Services/Vector.png";
 import virtualNavIcon from "@/assets/icons/navbar/Services/virtual.png";
+import meetingRoomNavIcon from "@/assets/icons/navbar/Services/meetingRoom.png";
+import privateOfficeNavIcon from "@/assets/icons/navbar/Services/privateeOffice.png";
+import flexibleSeatingNavIcon from "@/assets/icons/navbar/Services/flexibleSeating.png";
 import type { ServiceItem, ServiceNavItem } from "@/data/service/types";
 
 export const serviceNavItems: readonly ServiceNavItem[] = [
   { slug: "day-pass", label: "Day Pass", icon: dayPassNavIcon },
-  { slug: "meeting-room", label: "Meeting Room" },
-  { slug: "private-cabin", label: "Private Office" },
+  { slug: "meeting-room", label: "Meeting Room", icon: meetingRoomNavIcon },
+  { slug: "private-cabin", label: "Private Office", icon: privateOfficeNavIcon },
   { slug: "coworking-space", label: "Coworking Space", icon: coworkingNavIcon },
   { slug: "managed-office", label: "Managed Office", icon: managedNavIcon },
   { slug: "dedicated-desk", label: "Dedicated Desk", icon: dedicatedNavIcon },
   { slug: "event-space", label: "Event Space", icon: eventNavIcon },
   { slug: "virtual-office", label: "Virtual Office", icon: virtualNavIcon },
   { slug: "podcast-studio", label: "Podcast Studio", icon: vectorNavIcon },
-  { slug: "flexible-seating", label: "Flexible Seating" },
+  { slug: "flexible-seating", label: "Flexible Seating", icon: flexibleSeatingNavIcon },
 ];
 
 export const services: ServiceItem[] = [
