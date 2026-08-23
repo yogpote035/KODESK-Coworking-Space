@@ -856,49 +856,49 @@ export default function Home() {
 
       {/* ── Testimonials ── */}
       {sectionVisible("testimonials") && activeTestimonials.length > 0 ? (
-      <section data-cms-section="home.testimonials" data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div data-fade className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{typeof testimonialsContent.heading === "string" && testimonialsContent.heading.trim() ? testimonialsContent.heading : "What Our Members Say"}</h2>
-          <p className="mt-3 text-sm text-slate-500 sm:text-base">
-            {typeof testimonialsContent.description === "string" && testimonialsContent.description.trim() ? testimonialsContent.description : "Hear from professionals and businesses working from KODESK."}
-          </p>
-        </div>
+        <section data-cms-section="home.testimonials" data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div data-fade className="text-center">
+            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{typeof testimonialsContent.heading === "string" && testimonialsContent.heading.trim() ? testimonialsContent.heading : "What Our Members Say"}</h2>
+            <p className="mt-3 text-sm text-slate-500 sm:text-base">
+              {typeof testimonialsContent.description === "string" && testimonialsContent.description.trim() ? testimonialsContent.description : "Hear from professionals and businesses working from KODESK."}
+            </p>
+          </div>
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
-          {activeTestimonials.map((t) => (
-            <div
-              key={t.name}
-              data-fade
-              className="flex flex-col rounded-[1.25rem] p-8 shadow-[0_18px_50px_rgba(10,16,40,0.18)] sm:p-10"
-              style={{ background: "linear-gradient(160deg, #131f4a 0%, #1c2c63 55%, #2f47a3 100%)" }}
-            >
-              {/* Avatar */}
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-lg font-semibold text-white ring-2 ring-white/20">
-                {t.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
+          <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
+            {activeTestimonials.map((t) => (
+              <div
+                key={t.name}
+                data-fade
+                className="flex flex-col rounded-[1.25rem] p-8 shadow-[0_18px_50px_rgba(10,16,40,0.18)] sm:p-10"
+                style={{ background: "linear-gradient(160deg, #131f4a 0%, #1c2c63 55%, #2f47a3 100%)" }}
+              >
+                {/* Avatar */}
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 text-lg font-semibold text-white ring-2 ring-white/20">
+                  {t.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+
+                {/* Stars */}
+                <div className="mt-6 flex gap-1 text-xl">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className={i < t.rating ? "text-[#F5C518]" : "text-white/25"}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+
+                {/* Name + role */}
+                <p className="mt-5 text-lg font-semibold text-white">{t.name}</p>
+                <p className="mt-1 text-sm text-white/55">{t.role}</p>
+
+                {/* Quote */}
+                <p className="mt-6 text-sm leading-7 text-white/85">&ldquo;{t.quote}&rdquo;</p>
               </div>
-
-              {/* Stars */}
-              <div className="mt-6 flex gap-1 text-xl">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className={i < t.rating ? "text-[#F5C518]" : "text-white/25"}>
-                    ★
-                  </span>
-                ))}
-              </div>
-
-              {/* Name + role */}
-              <p className="mt-5 text-lg font-semibold text-white">{t.name}</p>
-              <p className="mt-1 text-sm text-white/55">{t.role}</p>
-
-              {/* Quote */}
-              <p className="mt-6 text-sm leading-7 text-white/85">&ldquo;{t.quote}&rdquo;</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
       ) : null}
 
       {/* ── FAQ ── */}
