@@ -111,9 +111,6 @@ export default function GalleryPage() {
         <div className="relative bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2">
           <ArcMenu />
         </div>
-
-
-
       </section>
 
       <section data-cms-section="gallery.filters" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
