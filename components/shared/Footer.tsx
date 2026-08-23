@@ -31,6 +31,7 @@ const services = [
 
 export function Footer() {
   const { settings } = usePublicCms();
+  const logoUrl = settings.branding?.logo_url?.trim();
   const contact = resolvePublicContact(settings);
   const hours = settings.business_hours?.reception ?? business.receptionHours;
   const social = { ...business.socialLinks, ...settings.social_links };
@@ -96,12 +97,12 @@ export function Footer() {
         <div className="mt-14 border-t border-white/25 pt-5">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
-              <Image
+              {logoUrl ? <img src={logoUrl} alt="Kodesk" className="h-auto w-[118px] object-contain" /> : <Image
                 src={kodeskLogo}
                 alt="Kodesk"
                 className="h-auto w-[118px]"
                 sizes="118px"
-              />
+              />}
             </div>
 
             <div className="flex items-center gap-5">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArcMenu } from "@/components/ui/arcmenu";
 import { ServiceShowcaseCard } from "@/components/shared/ServiceShowcaseCard";
 import { services, servicesOverview } from "@/data/service";
+import { getPublicCmsData } from "@/lib/cms/public";
 import serviceimg from "@/assets/images/Services/service.png"
 
 const ctaImage = services.find(
@@ -39,7 +40,13 @@ const showcaseCards = showcaseOrder.reduce<ShowcaseCard[]>((acc, entry) => {
   return acc;
 }, []);
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { servicePages } = await getPublicCmsData();
+
+  const coverImageBySlug = new Map(
+    servicePages.map((detail) => [detail.service_slug, detail.cover_image_url]),
+  );
+
   return (
     <section className="bg-[#faf7f1] px-3 pb-0 pt-0 sm:px-4">
       <div className="w-full ">
@@ -94,9 +101,17 @@ export default function ServicesPage() {
           </div>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {showcaseCards.map((service) => (
-              <ServiceShowcaseCard key={service.slug} service={service} />
-            ))}
+            {showcaseCards.map((service) => {
+              const cmsSlug = service.slug === "private-cabin" ? "private-office" : service.slug;
+
+              return (
+                <ServiceShowcaseCard
+                  key={service.slug}
+                  service={service}
+                  imageUrl={coverImageBySlug.get(cmsSlug)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

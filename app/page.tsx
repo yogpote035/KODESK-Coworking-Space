@@ -148,8 +148,9 @@ export default function Home() {
   const [activeAmenity, setActiveAmenity] = useState(0);
   const [tourMessage, setTourMessage] = useState("");
   const [sendingTour, setSendingTour] = useState(false);
-  const { pricing, media, settings } = usePublicCms();
+  const { pricing, media, pageSections, settings } = usePublicCms();
   const contact = resolvePublicContact(settings);
+  const heroSection = pageSections.find((section) => section.page_key === "home" && section.section_key === "hero")?.content;
   const rootRef = useRef<HTMLDivElement>(null);
 
   const submitTour = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -302,14 +303,14 @@ export default function Home() {
         {/* Hero text */}
         <div className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center sm:py-28">
           <p data-hero-item className="text-[0.6rem] font-semibold uppercase tracking-[0.3em] text-white/55 sm:text-[0.7rem] sm:tracking-[0.4em]">
-            Achieving Success Together
+            {heroSection?.eyebrow || "Achieving Success Together"}
           </p>
           <h1 data-hero-item className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Premium Coworking Space in Baner, Pune
+            {heroSection?.heading || "Premium Coworking Space in Baner, Pune"}
           </h1>
           <h2 data-hero-item className="mt-2 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-[#F28C28]">Flexible Workspaces</span>
-            <span className="text-white"> Designed for Productivity</span>
+            <span className="text-[#F28C28]">{heroSection?.highlight || "Flexible Workspaces"}</span>
+            <span className="text-white"> {heroSection?.subheading || "Designed for Productivity"}</span>
           </h2>
         </div>
 
@@ -347,7 +348,7 @@ export default function Home() {
                 <option value="Other" className="bg-[#182553] text-white">Other / Not sure yet</option>
               </select>
               <button type="submit" disabled={sendingTour} className="shrink-0 rounded-xl bg-[#141f49] px-7 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1c2d63] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 sm:col-span-2 lg:col-span-1">
-                {sendingTour ? "Sending…" : "Book a Free Tour"}
+                {sendingTour ? "Sending…" : heroSection?.cta_label || "Book a Free Tour"}
               </button>
               {tourMessage ? <p role="status" className={`sm:col-span-2 lg:col-span-5 text-center text-sm font-medium ${tourMessage.startsWith("Thank") || tourMessage.startsWith("Sending") ? "text-emerald-200" : "text-rose-200"}`}>{tourMessage}</p> : null}
             </form>

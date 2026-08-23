@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import serviceLogo from "@/assets/icons/navbar/Services/kodesklogo.png";
 import servicePageLogo from "@/assets/icons/services/kodeskserviceslogo.png";
 import { ServiceStrip } from "@/components/shared/ServiceStrip";
+import { usePublicCms } from "@/lib/cms/client";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -19,6 +20,8 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { settings } = usePublicCms();
+  const logoUrl = settings.branding?.logo_url?.trim();
   const isServiceRoute = pathname === "/services" || pathname.startsWith("/services/");
   const [showServiceStrip, setShowServiceStrip] = useState(isServiceRoute);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -54,12 +57,12 @@ export function Navbar() {
         <div className="flex min-h-[2px] items-center justify-between gap-2 lg:min-h-[4rem] lg:gap-4">
           <Link href="/" className="flex shrink-0 items-center">
             <span className={`flex flex-col items-start leading-none ${servicesNavbarOpen ? "text-[#1f2d62]" : "text-white"}`}>
-              <Image
+              {logoUrl ? <img src={logoUrl} alt="Kodesk" className="mt-0 h-auto w-[126px] object-contain sm:ml-2 sm:mt-3 sm:w-45 sm:h-9" /> : <Image
                 src={isServiceRoute ? servicePageLogo : serviceLogo}
                 alt="Kodesk"
                 priority
                 className="mt-0 h-auto w-[126px] px-0 py-0 sm:ml-2 sm:mt-3 sm:w-45 sm:px-8 sm:py-2 sm:h-9"
-              />
+              />}
                 <span className="mt-1 px-0 text-[0.34rem] tracking-[0.1em] sm:px-10 sm:text-[0.42rem]">
                   ACHIEVING SUCCESS TOGETHER
                 </span>

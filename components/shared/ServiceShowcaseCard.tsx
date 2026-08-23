@@ -9,9 +9,10 @@ type ShowcaseService = ServiceItem & {
 
 type ServiceShowcaseCardProps = {
   service: ShowcaseService;
+  imageUrl?: string | null;
 };
 
-export function ServiceShowcaseCard({ service }: ServiceShowcaseCardProps) {
+export function ServiceShowcaseCard({ service, imageUrl }: ServiceShowcaseCardProps) {
   return (
     <Link
       href={`/services/${service.slug}`}
@@ -20,13 +21,21 @@ export function ServiceShowcaseCard({ service }: ServiceShowcaseCardProps) {
     >
       <div className="relative overflow-visible">
         <div className="relative aspect-[1.53/1] overflow-hidden rounded-[2.4rem] bg-[#e9e3db] shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition duration-500 ease-out group-hover:shadow-[0_24px_60px_rgba(15,23,42,0.16)]">
-          <Image
-            src={service.galleryImage}
-            alt={service.label}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover object-center transition duration-700 ease-out group-hover:scale-[1.04]"
-          />
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={service.label}
+              className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          ) : (
+            <Image
+              src={service.galleryImage}
+              alt={service.label}
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover object-center transition duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          )}
 
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.06)_100%)] transition duration-500 ease-out group-hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.26)_100%)]" />
 
