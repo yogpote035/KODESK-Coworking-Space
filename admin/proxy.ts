@@ -26,8 +26,12 @@ export async function proxy(request: NextRequest) {
     new Promise<null>((resolve) => setTimeout(() => resolve(null), 5000)),
   ]);
   const user = authResult?.data.user;
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard"))
+  if (!user)
     return NextResponse.redirect(new URL("/login", request.url));
+  if (user) {
+    const { data: profile } = await client.from("admin_profiles").select("role,is_active").eq("id", user.id).maybeSingle();
+    if (profile?.role !== "admin" || !profile.is_active) return NextResponse.redirect(new URL("/login", request.url));
+  }
   if (user && request.nextUrl.pathname === "/login")
     return NextResponse.redirect(new URL("/dashboard", request.url));
   return response;
@@ -36,11 +40,18 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
+    "/editor/:path*",
+    "/content/:path*",
     "/enquiries/:path*",
     "/pricing/:path*",
     "/media/:path*",
     "/services/:path*",
     "/settings/:path*",
+    "/sections/:path*",
+    "/quality/:path*",
+    "/revisions/:path*",
+    "/redirects/:path*",
+    "/media-audit/:path*",
     "/login",
   ],
 };

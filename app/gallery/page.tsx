@@ -56,7 +56,17 @@ const galleryItems = [
 
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]["value"]>("all");
-  const { media } = usePublicCms();
+  const { media, publishedDocuments } = usePublicCms();
+  const galleryHeroDocument = publishedDocuments.find((document) => document.document_key === "gallery.hero")?.content;
+  const galleryHero = galleryHeroDocument && typeof galleryHeroDocument === "object" ? galleryHeroDocument as Record<string, unknown> : {};
+  const galleryHeroText = (key: "eyebrow" | "title" | "description" | "primary_label" | "primary_url" | "secondary_label" | "secondary_url", fallback: string) => typeof galleryHero[key] === "string" && galleryHero[key].trim() ? galleryHero[key] : fallback;
+  const galleryHeroImage = typeof galleryHero.image_url === "string" && galleryHero.image_url.trim() ? galleryHero.image_url : null;
+  const filterDocument = publishedDocuments.find((document) => document.document_key === "gallery.filters")?.content;
+  const filterContent = filterDocument && typeof filterDocument === "object" ? filterDocument as Record<string, unknown> : {};
+  const filterText = (key: string, fallback: string) => typeof filterContent[key] === "string" && String(filterContent[key]).trim() ? String(filterContent[key]).trim() : fallback;
+  const galleryContentDocument = publishedDocuments.find((document) => document.document_key === "gallery.content")?.content;
+  const galleryContent = galleryContentDocument && typeof galleryContentDocument === "object" ? galleryContentDocument as Record<string, unknown> : {};
+  const galleryContentText = (key: "heading" | "description", fallback: string) => typeof galleryContent[key] === "string" && String(galleryContent[key]).trim() ? String(galleryContent[key]).trim() : fallback;
 
   const managedGalleryItems = media
     .filter((item) => item.category === "gallery")
@@ -69,61 +79,60 @@ export default function GalleryPage() {
 
   return (
     <div className="bg-[#f2f2ef]">
-      <section className="relative isolate overflow-hidden">
+      <section data-cms-section="gallery.hero" className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src={heroImage}
-            alt="KODESK coworking space in Baner Pune"
-            fill
-            className="object-cover object-center"
-          />
+          {galleryHeroImage ? <img src={galleryHeroImage} alt="KODESK coworking space in Baner Pune" className="h-full w-full object-cover object-center" /> : <Image src={heroImage} alt="KODESK coworking space in Baner Pune" fill className="object-cover object-center" />}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.28),_transparent_35%),linear-gradient(180deg,rgba(15,23,42,0.55),rgba(15,23,42,0.18))]" />
         </div>
 
         <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
           <p className="text-sm font-medium uppercase tracking-[0.35em] text-white/75">
-            Our Gallery
+            {galleryHeroText("eyebrow", "Our Gallery")}
           </p>
           <h1 className="mt-6 max-w-3xl font-[family:var(--font-kodchasan)] text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Explore KODESK Workspaces in Baner, Pune
+            {galleryHeroText("title", "Explore KODESK Workspaces in Baner, Pune")}
           </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/80">{galleryHeroText("description", "Discover the spaces, meeting rooms, amenities and professional work environment at KODESK in Baner, Pune.")}</p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link
-              href="/pricing"
+              href={galleryHeroText("primary_url", "/contact")}
               className="rounded-full bg-[#14275f] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(20,43,119,0.28)] transition hover:bg-[#1e3a8a]"
             >
-              Get Started - Book a Tour
+              {galleryHeroText("primary_label", "Get Started - Book a Tour")}
             </Link>
             <Link
-              href="/contact"
+              href={galleryHeroText("secondary_url", "/contact")}
               className="rounded-full border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/20"
             >
-              View Memberships
+              {galleryHeroText("secondary_label", "View Memberships")}
             </Link>
           </div>
         </div>
-              <div className="relative bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2">
-                <ArcMenu />
-              </div>
-              
+        <div className="relative bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2">
+          <ArcMenu />
+        </div>
+
 
 
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section data-cms-section="gallery.filters" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div data-cms-section="gallery.content" className="mx-auto mb-10 max-w-3xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">{galleryContentText("heading", "A closer look at KODESK")}</h2>
+          <p className="mt-3 text-base leading-7 text-slate-600">{galleryContentText("description", "Browse our coworking spaces, meeting rooms, private offices and member amenities in Baner, Pune.")}</p>
+        </div>
         <div className="flex flex-wrap justify-center gap-3">
           {filters.map((filter) => (
             <button
               key={filter.value}
               type="button"
               onClick={() => setActiveFilter(filter.value)}
-              className={`min-w-[10.5rem] rounded-[0.6rem] border px-6 py-3 text-sm font-medium transition sm:text-[0.98rem] ${
-                activeFilter === filter.value
+              className={`min-w-[10.5rem] rounded-[0.6rem] border px-6 py-3 text-sm font-medium transition sm:text-[0.98rem] ${activeFilter === filter.value
                   ? "border-transparent bg-gradient-to-b from-[#263573] to-[#4a63cf] text-white shadow-[0_10px_24px_rgba(38,53,115,0.22)]"
                   : "border-[#9aa8e1] bg-white text-slate-800 hover:border-[#263573] hover:text-[#263573]"
-              }`}
+                }`}
             >
-              {filter.label}
+              {filterText(filter.value === "meeting-rooms" ? "meeting_rooms" : filter.value === "lounge-areas" ? "lounge_areas" : filter.value, filter.label)}
             </button>
           ))}
         </div>
@@ -131,7 +140,7 @@ export default function GalleryPage() {
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {visibleItems.map((item) => (
             <div
-              key={item.title}
+              key={item.title + Date.now()}
               className="group relative overflow-hidden rounded-[1.2rem] bg-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.1)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.18)]"
             >
               <div className="relative aspect-[16/11] overflow-hidden bg-slate-100">

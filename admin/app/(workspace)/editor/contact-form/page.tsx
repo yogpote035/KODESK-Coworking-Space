@@ -1,0 +1,5 @@
+import { FixedSectionEditor } from "../../../../components/admin/FixedSectionEditor";
+
+export default function ContactFormEditorPage() {
+  return <FixedSectionEditor title="Contact form content" subtitle="Update visible form copy while required fields, validation and enquiry delivery remain protected." documentKey="contact.form" fields={[{ key: "heading", label: "Form heading", type: "text", maxLength: 80 }, { key: "name_label", label: "Name label", type: "text", maxLength: 40 }, { key: "phone_label", label: "Phone label", type: "text", maxLength: 40 }, { key: "email_label", label: "Email label", type: "text", maxLength: 40 }, { key: "interest_label", label: "Workspace label", type: "text", maxLength: 60 }, { key: "message_label", label: "Message label", type: "text", maxLength: 40 }, { key: "submit_label", label: "Submit button", type: "text", maxLength: 50 }]} fallback={{ heading: "Send Us a Message", name_label: "Name", phone_label: "Phone", email_label: "Email", interest_label: "Interested In", message_label: "Message", submit_label: "Send Enquiry" }} />;
+}

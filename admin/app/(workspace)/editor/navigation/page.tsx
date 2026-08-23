@@ -1,0 +1,5 @@
+import { FixedSectionEditor } from "../../../../components/admin/FixedSectionEditor";
+
+export default function NavigationEditorPage() {
+  return <FixedSectionEditor title="Navigation labels" subtitle="Control approved public navigation labels and visibility. Destinations remain developer-approved for SEO and responsive safety." documentKey="global.navigation" fields={[{ key: "home", label: "Home label", type: "text", maxLength: 24 }, { key: "about", label: "About label", type: "text", maxLength: 24 }, { key: "services", label: "Services label", type: "text", maxLength: 24 }, { key: "gallery", label: "Gallery label", type: "text", maxLength: 24 }, { key: "pricing", label: "Pricing label", type: "text", maxLength: 24 }, { key: "contact", label: "Contact label", type: "text", maxLength: 24 }, { key: "hidden", label: "Hidden items (comma separated)", type: "text", maxLength: 100 }]} fallback={{ home: "Home", about: "About", services: "Services", gallery: "Gallery", pricing: "Pricing", contact: "Contact", hidden: "" }} />;
+}

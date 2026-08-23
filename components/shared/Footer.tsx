@@ -30,8 +30,14 @@ const services = [
 ];
 
 export function Footer() {
-  const { settings } = usePublicCms();
+  const { settings, publishedDocuments } = usePublicCms();
+  const footerDocument = publishedDocuments.find((item) => item.document_key === "global.footer")?.content ?? {};
   const logoUrl = settings.branding?.logo_url?.trim();
+  const tagline = (typeof footerDocument.description === "string" && footerDocument.description.trim()) || settings.branding?.tagline?.trim() || "Flexible workspace solutions for professionals, startups and businesses in Baner, Pune.";
+  const copyright = (typeof footerDocument.copyright === "string" && footerDocument.copyright.trim()) || `© 2026 ${business.name}. All rights reserved.`;
+  const hiddenFooterLinks = typeof footerDocument.hidden_links === "string" ? footerDocument.hidden_links.split(",").map((item) => item.trim()).filter(Boolean) : [];
+  const visibleQuickLinks = quickLinks.filter((item) => !hiddenFooterLinks.includes(item.label.toLowerCase().replace(/\s+/g, "-")));
+  const visibleServices = services.filter((item) => !hiddenFooterLinks.includes(item.label.toLowerCase().replace(/\s+/g, "-")));
   const contact = resolvePublicContact(settings);
   const hours = settings.business_hours?.reception ?? business.receptionHours;
   const social = { ...business.socialLinks, ...settings.social_links };
@@ -42,19 +48,19 @@ export function Footer() {
     { label: "LinkedIn", href: social.linkedin, icon: linkedinIcon },
   ];
   return (
-    <footer className="border-t border-white/10 bg-[#142050] text-white">
+    <footer data-cms-section="global.footer" className="border-t border-white/10 bg-[#142050] text-white">
       <div className="mx-auto w-full max-w-[1120px] px-6 pb-8 pt-14 sm:px-8 lg:px-6">
         <div className="grid gap-12 md:grid-cols-[1.1fr_0.8fr_0.95fr_0.75fr]">
           <div className="max-w-[280px]">
             <p className="text-sm leading-6 text-white/90 sm:text-[0.98rem]">
-              Flexible workspace solutions for professionals, startups and businesses in Baner, Pune.
+              {tagline}
             </p>
           </div>
 
           <div>
             <h2 className="text-[1.05rem] font-medium text-white">Quick Links</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
-              {quickLinks.map((item) => (
+              {visibleQuickLinks.map((item) => (
                 <li key={item.href}>
                   <Link className="transition hover:text-white" href={item.href}>
                     {item.label}
@@ -67,7 +73,7 @@ export function Footer() {
           <div>
             <h2 className="text-[1.05rem] font-medium text-white">Workspace</h2>
             <ul className="mt-6 space-y-4 text-[0.95rem] text-white/90">
-              {services.map((item) => (
+              {visibleServices.map((item) => (
                 <li key={item.href}>
                   <Link className="transition hover:text-white" href={item.href}>
                     {item.label}
@@ -130,7 +136,7 @@ export function Footer() {
 
         <div className="mt-5 border-t border-white/25 pt-6">
           <p className="text-center text-sm text-white/90">
-            &copy; 2026 {business.name}. All rights reserved.
+            {copyright}
           </p>
         </div>
       </div>

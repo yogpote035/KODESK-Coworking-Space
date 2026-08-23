@@ -1,0 +1,31 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { supabase } from "../../lib/supabase";
+import { LoadingState, PageHeader } from "./ui";
+
+type Faq = { q: string; a: string };
+type DocumentRow = { draft_content: { items?: Faq[] }; published_content: { items?: Faq[] }; published_version: number };
+const homeFallback: Faq[] = [
+  { q: "What is included in the coworking package?", a: "Coworking includes a professional workspace and access to confirmed on-site amenities. Please contact our team for current package details." },
+  { q: "Do you offer a day pass?", a: "Yes. A KODESK day pass is ₹599 per day, subject to availability." },
+  { q: "What is the price of a dedicated desk?", a: "A dedicated desk is ₹7,499 per month. Please contact our team to check availability." },
+  { q: "What are the reception hours?", a: "Reception is open Monday to Saturday, 8:00 AM to 8:00 PM." },
+];
+
+export function FaqEditor({ documentKey = "home.faq", title = "Homepage FAQs", subtitle = "Manage the FAQ cards and matching public FAQ structured data.", fallback = homeFallback }: { documentKey?: string; title?: string; subtitle?: string; fallback?: Faq[] }) {
+  const normalize = (value: unknown) => {
+    const source = value && typeof value === "object" && Array.isArray((value as { items?: unknown }).items) ? (value as { items: unknown[] }).items : fallback;
+    const items = source.map((item) => item && typeof item === "object" ? { q: typeof (item as Faq).q === "string" ? (item as Faq).q.trim() : "", a: typeof (item as Faq).a === "string" ? (item as Faq).a.trim() : "" } : { q: "", a: "" }).filter((item) => item.q && item.a);
+    return items.length ? items : fallback;
+  };
+  const [draft, setDraft] = useState<Faq[]>(fallback); const [published, setPublished] = useState<Faq[]>(fallback); const [version, setVersion] = useState(0); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [notice, setNotice] = useState("");
+  const changed = useMemo(() => JSON.stringify(draft) !== JSON.stringify(published), [draft, published]);
+  const load = async () => { if (!supabase) return; setLoading(true); const result = await supabase.from("content_documents").select("draft_content,published_content,published_version").eq("document_key", documentKey).maybeSingle(); if (result.error?.code === "42P01") { setNotice("Apply migration 202608220007_cms_publication_workflow.sql to enable drafts and publishing."); setLoading(false); return; } const row = result.data as DocumentRow | null; if (row) { setDraft(normalize(row.draft_content)); setPublished(row.published_version ? normalize(row.published_content) : fallback); setVersion(row.published_version); } setLoading(false); };
+  useEffect(() => { void load(); }, [documentKey]);
+  const update = (index: number, field: keyof Faq, value: string) => setDraft((items) => items.map((item, itemIndex) => itemIndex === index ? { ...item, [field]: value } : item));
+  const save = async (publish: boolean) => { if (!supabase || (publish && draft.some((item) => !item.q.trim() || !item.a.trim()))) { setNotice("Every FAQ needs both a question and an answer before publishing."); return; } setSaving(true); const { data: auth } = await supabase.auth.getUser(); const nextVersion = version + 1; const documentResult = await supabase.from("content_documents").upsert(publish ? { document_key: documentKey, draft_content: { items: draft }, published_content: { items: draft }, draft_updated_by: auth.user?.id ?? null, published_by: auth.user?.id ?? null, published_at: new Date().toISOString(), published_version: nextVersion } : { document_key: documentKey, draft_content: { items: draft }, draft_updated_by: auth.user?.id ?? null }, { onConflict: "document_key" }); const revisionResult = !publish || documentResult.error ? { error: documentResult.error } : await supabase.from("content_revisions").insert({ document_key: documentKey, version: nextVersion, content: { items: draft }, action: "published", created_by: auth.user?.id ?? null }); setSaving(false); if (revisionResult.error) { setNotice("Publish could not be completed. The current public FAQs remain live."); return; } if (publish) { setPublished(draft); setVersion(nextVersion); setNotice("FAQs published successfully."); } else setNotice("FAQ draft saved. The public website has not changed."); };
+  if (loading) return <LoadingState rows={6} />;
+  return <><PageHeader title={title} subtitle={subtitle} action={<Link className="button button-secondary" href="/editor">Back to Website Editor</Link>} />{notice && <div className="toast-message">{notice}</div>}<section className="surface editor-panel editor-wide"><div className="surface-heading"><div><p className="section-kicker">FIXED PAGE · FAQ</p><h2>Frequently asked questions</h2><p>Questions and answers use the established public accordion design and matching structured data where supported.</p></div><span className={`editor-state ${changed ? "draft" : "published"}`}>{changed ? "Draft changes" : "Published"}</span></div><div className="faq-editor-list">{draft.map((item, index) => <article className="faq-editor-item" key={`${index}-${item.q}`}><div className="faq-editor-title"><b>FAQ {index + 1}</b><button className="button button-danger" type="button" disabled={draft.length === 1} onClick={() => setDraft((items) => items.filter((_, itemIndex) => itemIndex !== index))}>Remove</button></div><label>Question<input maxLength={160} value={item.q} onChange={(event) => update(index, "q", event.target.value)} /></label><label>Answer<textarea maxLength={900} value={item.a} onChange={(event) => update(index, "a", event.target.value)} /></label></article>)}</div><button className="button button-ghost" type="button" onClick={() => setDraft((items) => [...items, { q: "", a: "" }])}>Add FAQ</button><div className="editor-actions"><button className="button button-secondary" type="button" disabled={saving} onClick={() => void save(false)}>{saving ? "Saving…" : "Save Draft"}</button><button className="button button-primary" type="button" disabled={saving} onClick={() => void save(true)}>{saving ? "Publishing…" : "Publish FAQs"}</button></div></section></>;
+}

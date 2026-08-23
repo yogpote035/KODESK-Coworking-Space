@@ -18,6 +18,7 @@ export function ServiceDetail({ service, heading, heroDescription, detail }: { s
   const benefits = detail?.benefits?.length ? detail.benefits : content.benefits;
   const audience = detail?.audience?.length ? detail.audience : content.audience;
   const features = detail?.features?.length ? detail.features : content.features;
+  const faqs = detail?.faq_items?.filter((item) => item.question.trim() && item.answer.trim()) ?? [];
 
   const related = content.relatedSlugs
     .map((slug) => services.find((item) => item.slug === slug))
@@ -26,7 +27,8 @@ export function ServiceDetail({ service, heading, heroDescription, detail }: { s
   return (
     <div className="bg-[#f5f3ee]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: siteUrl }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: pageTitle }] }) }} />
-      <section className="relative isolate overflow-hidden">
+      {faqs.length ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) }) }} /> : null}
+      <section data-cms-section={`service.detail:${service.slug}`} className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           {detail?.hero_image_url ? <img src={detail.hero_image_url} alt={`${service.label} at KODESK Coworking Space in Baner, Pune`} className="h-full w-full object-cover object-center" /> : <Image src={service.image} alt={`${service.label} at KODESK Coworking Space in Baner, Pune`} fill priority sizes="100vw" className="object-cover object-center" />}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(79,119,255,0.34),transparent_34%),radial-gradient(circle_at_86%_34%,rgba(255,161,63,0.28),transparent_26%),linear-gradient(90deg,rgba(16,27,74,0.62)_0%,rgba(56,94,212,0.18)_42%,rgba(255,145,41,0.42)_100%)]" />
@@ -53,7 +55,7 @@ export function ServiceDetail({ service, heading, heroDescription, detail }: { s
         </div>
       </section>
 
-      <section className="bg-[#fbfaf7] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <section data-cms-section={`service.overview:${service.slug}`} className="bg-[#fbfaf7] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <article>
@@ -146,6 +148,20 @@ export function ServiceDetail({ service, heading, heroDescription, detail }: { s
           </div>
         </div>
       </section>
+
+      {faqs.length ? (
+        <section className="bg-[#fbfaf7] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            <div className="text-center">
+              <p className="text-lg font-medium bg-[linear-gradient(90deg,#2947AA_0%,#FC7B1B_100%)] bg-clip-text text-transparent inline-block">Helpful details</p>
+              <h2 className="mt-3 text-3xl font-medium tracking-tight text-slate-900 sm:text-[2.1rem]">Frequently asked questions</h2>
+            </div>
+            <div className="mt-10 space-y-4">
+              {faqs.map((faq, index) => <details key={`${faq.question}-${index}`} className="group rounded-[0.9rem] border border-slate-200 bg-white px-6 shadow-[0_10px_30px_rgba(10,16,40,0.06)]"><summary className="cursor-pointer list-none py-5 text-left text-base font-medium text-slate-900 marker:content-none"><span className="flex items-center justify-between gap-4">{faq.question}<span className="text-xl text-[#1b2c70] transition group-open:rotate-45">+</span></span></summary><p className="border-t border-slate-100 py-5 text-sm leading-7 text-slate-600">{faq.answer}</p></details>)}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">

@@ -22,7 +22,7 @@ export function PlaceholderPage({
   secondaryLabel,
 }: PlaceholderPageProps) {
   return (
-    <section className="bg-[#f2f2ef]">
+    <section data-cms-section="pricing.hero" className="bg-[#f2f2ef]">
       <div className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           <Image

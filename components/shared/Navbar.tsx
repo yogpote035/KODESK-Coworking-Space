@@ -20,8 +20,20 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const { settings } = usePublicCms();
+  const { settings, publishedDocuments } = usePublicCms();
+  const navigationDocument = publishedDocuments.find((item) => item.document_key === "global.navigation")?.content ?? {};
+  const cmsNavItems = navItems.map((item) => {
+    const key = item.href === "/" ? "home" : item.href.slice(1);
+    const value = navigationDocument[key];
+    return { ...item, label: typeof value === "string" && value.trim() ? value.trim() : item.label };
+  }).filter((item) => {
+    const hidden = typeof navigationDocument.hidden === "string" ? navigationDocument.hidden.split(",").map((value) => value.trim()).filter(Boolean) : [];
+    return !hidden.includes(item.href === "/" ? "home" : item.href.slice(1));
+  });
   const logoUrl = settings.branding?.logo_url?.trim();
+  const tagline = settings.branding?.tagline?.trim() || "ACHIEVING SUCCESS TOGETHER";
+  const defaultCtaLabel = settings.branding?.default_cta_label?.trim() || "Book a Tour";
+  const defaultCtaUrl = settings.branding?.default_cta_url?.trim() || "/contact";
   const isServiceRoute = pathname === "/services" || pathname.startsWith("/services/");
   const [showServiceStrip, setShowServiceStrip] = useState(isServiceRoute);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -52,7 +64,7 @@ export function Navbar() {
     : "mx-auto flex w-full max-w-[1400px] flex-col rounded-[1rem] border border-white/20  px-4 py-3 text-white backdrop-blur-xl bg-white/10 shadow-[0_24px_90px_rgba(0,0,0,0.3)] lg:px-6"
 
   return (
-    <header className="absolute left-0 right-0 top-0 z-50 px-3 pt-3 sm:px-4">
+    <header data-cms-section="global.navigation" className="absolute left-0 right-0 top-0 z-50 px-3 pt-3 sm:px-4">
       <div ref={navbarRef} className={`${wrapperClasses} ${servicesNavbarOpen ? "pb-2" : ""}`}>
         <div className="flex min-h-[2px] items-center justify-between gap-2 lg:min-h-[4rem] lg:gap-4">
           <Link href="/" className="flex shrink-0 items-center">
@@ -64,13 +76,13 @@ export function Navbar() {
                 className="mt-0 h-auto w-[126px] px-0 py-0 sm:ml-2 sm:mt-3 sm:w-45 sm:px-8 sm:py-2 sm:h-9"
               />}
                 <span className="mt-1 px-0 text-[0.34rem] tracking-[0.1em] sm:px-10 sm:text-[0.42rem]">
-                  ACHIEVING SUCCESS TOGETHER
+                  {tagline}
                 </span>
             </span>
           </Link>
 
           <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex xl:gap-10">
-            {navItems.map((item) => {
+            {cmsNavItems.map((item) => {
               const active =
                 item.href === "/"
                   ? pathname === "/"
@@ -128,10 +140,10 @@ export function Navbar() {
           </nav>
 
           <Link
-            href="/contact"
+            href={defaultCtaUrl}
             className="hidden shrink-0 items-center justify-center whitespace-nowrap rounded-[0.6rem] gradient-card px-5 py-3 text-sm font-medium text-white shadow-[0_12px_24px_rgba(36,49,109,0.22)] lg:inline-flex"
           >
-            Book a Tour
+            {defaultCtaLabel}
           </Link>
 
           <button
@@ -223,11 +235,11 @@ export function Navbar() {
             <div className="mt-auto border-t border-white/10 pt-5">
               <p className="text-xs leading-5 text-white/55">Find the workspace that works for you.</p>
               <Link
-                href="/contact"
+                href={defaultCtaUrl}
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-4 flex items-center justify-center rounded-xl gradient-card px-5 py-3.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(0,0,0,0.22)]"
               >
-                Book a Free Tour
+                {defaultCtaLabel}
               </Link>
             </div>
           </aside>

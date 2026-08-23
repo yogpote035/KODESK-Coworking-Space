@@ -108,6 +108,8 @@ const amenities = [
   },
 ];
 
+type PublishedAmenity = { icon_index: number; label: string; title: string; description: string; is_active: boolean; sort_order: number };
+
 const faqs = [
   {
     q: "What is included in the coworking package?",
@@ -148,9 +150,43 @@ export default function Home() {
   const [activeAmenity, setActiveAmenity] = useState(0);
   const [tourMessage, setTourMessage] = useState("");
   const [sendingTour, setSendingTour] = useState(false);
-  const { pricing, media, pageSections, settings } = usePublicCms();
+  const { pricing, media, pageSections, publishedDocuments, sectionSettings, settings } = usePublicCms();
+  const sectionVisible = (section: string) => sectionSettings.find((item) => item.page_key === "home" && item.section_key === section)?.is_visible !== false;
   const contact = resolvePublicContact(settings);
   const heroSection = pageSections.find((section) => section.page_key === "home" && section.section_key === "hero")?.content;
+  const publishedHero = publishedDocuments.find((document) => document.document_key === "home.hero")?.content;
+  const publishedFaqDocument = publishedDocuments.find((document) => document.document_key === "home.faq")?.content;
+  const publishedFaqs = publishedFaqDocument && typeof publishedFaqDocument === "object" && Array.isArray((publishedFaqDocument as { items?: unknown }).items)
+    ? (publishedFaqDocument as { items: unknown[] }).items.map((item) => item && typeof item === "object" ? { q: typeof (item as { q?: unknown }).q === "string" ? (item as { q: string }).q.trim() : "", a: typeof (item as { a?: unknown }).a === "string" ? (item as { a: string }).a.trim() : "" } : { q: "", a: "" }).filter((item) => item.q && item.a)
+    : [];
+  const activeFaqs = publishedFaqs.length ? publishedFaqs : faqs;
+  const publishedAmenitiesDocument = publishedDocuments.find((document) => document.document_key === "home.amenities")?.content;
+  const publishedAmenities = publishedAmenitiesDocument && typeof publishedAmenitiesDocument === "object" && Array.isArray((publishedAmenitiesDocument as { items?: unknown }).items)
+    ? (publishedAmenitiesDocument as { items: unknown[] }).items.flatMap((item) => {
+      if (!item || typeof item !== "object") return [];
+      const candidate = item as Partial<PublishedAmenity>;
+      if (typeof candidate.icon_index !== "number" || typeof candidate.label !== "string" || typeof candidate.title !== "string" || typeof candidate.description !== "string" || candidate.is_active === false) return [];
+      const fallbackAmenity = amenities[candidate.icon_index];
+      return fallbackAmenity ? [{ ...fallbackAmenity, ...candidate }] : [];
+    }).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    : [];
+  const activeAmenities = publishedAmenities.length ? publishedAmenities : amenities;
+  const testimonialsDocument = publishedDocuments.find((document) => document.document_key === "home.testimonials")?.content;
+  const testimonialsContent = testimonialsDocument && typeof testimonialsDocument === "object" ? testimonialsDocument as Record<string, unknown> : {};
+  const publishedTestimonials = Array.isArray(testimonialsContent.items) ? testimonialsContent.items.flatMap((item) => item && typeof item === "object" && typeof (item as { name?: unknown }).name === "string" && typeof (item as { role?: unknown }).role === "string" && typeof (item as { quote?: unknown }).quote === "string" && (item as { is_active?: unknown }).is_active !== false ? [{ name: (item as { name: string }).name, role: (item as { role: string }).role, quote: (item as { quote: string }).quote, rating: Math.min(5, Math.max(1, Number((item as { rating?: unknown }).rating) || 5)) }] : []) : [];
+  const activeTestimonials = publishedTestimonials.length ? publishedTestimonials : testimonials;
+  const homeServicesDocument = publishedDocuments.find((document) => document.document_key === "home.services")?.content;
+  const homeServicesContent = homeServicesDocument && typeof homeServicesDocument === "object" ? homeServicesDocument as Record<string, unknown> : {};
+  const homeServicesText = (key: string, fallback: string) => typeof homeServicesContent[key] === "string" && String(homeServicesContent[key]).trim() ? String(homeServicesContent[key]).trim() : fallback;
+  const visibleHomeServices = homeServices.map((service, index) => { const key = ["one", "two", "three"][index]; return { ...service, title: homeServicesText(`${key}_title`, service.title), description: homeServicesText(`${key}_description`, service.description) }; });
+  const pricingDocument = publishedDocuments.find((document) => document.document_key === "home.pricing")?.content;
+  const pricingContent = pricingDocument && typeof pricingDocument === "object" ? pricingDocument as Record<string, unknown> : {};
+  const pricingText = (key: string, fallback: string) => typeof pricingContent[key] === "string" && String(pricingContent[key]).trim() ? String(pricingContent[key]).trim() : fallback;
+  const heroContent = publishedHero && typeof publishedHero === "object" ? publishedHero as Record<string, unknown> : heroSection;
+  const heroText = (field: "eyebrow" | "heading" | "highlight" | "subheading" | "cta_label", fallback: string) => {
+    const value = heroContent?.[field];
+    return typeof value === "string" && value.trim() ? value : fallback;
+  };
   const rootRef = useRef<HTMLDivElement>(null);
 
   const submitTour = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -281,10 +317,10 @@ export default function Home() {
 
   return (
     <div ref={rootRef} className="bg-[#f2f2ef]">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: activeFaqs.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) }) }} />
 
       {/* ── Hero ── */}
-      <section className="relative isolate flex min-h-screen flex-col overflow-hidden">
+      <section data-cms-section="home.hero" className="relative isolate flex min-h-screen flex-col overflow-hidden">
         <video
           autoPlay
           muted
@@ -303,14 +339,14 @@ export default function Home() {
         {/* Hero text */}
         <div className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center sm:py-28">
           <p data-hero-item className="text-[0.6rem] font-semibold uppercase tracking-[0.3em] text-white/55 sm:text-[0.7rem] sm:tracking-[0.4em]">
-            {heroSection?.eyebrow || "Achieving Success Together"}
+            {heroText("eyebrow", "Achieving Success Together")}
           </p>
           <h1 data-hero-item className="mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            {heroSection?.heading || "Premium Coworking Space in Baner, Pune"}
+            {heroText("heading", "Premium Coworking Space in Baner, Pune")}
           </h1>
           <h2 data-hero-item className="mt-2 text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-[#F28C28]">{heroSection?.highlight || "Flexible Workspaces"}</span>
-            <span className="text-white"> {heroSection?.subheading || "Designed for Productivity"}</span>
+            <span className="text-[#F28C28]">{heroText("highlight", "Flexible Workspaces")}</span>
+            <span className="text-white"> {heroText("subheading", "Designed for Productivity")}</span>
           </h2>
         </div>
 
@@ -348,7 +384,7 @@ export default function Home() {
                 <option value="Other" className="bg-[#182553] text-white">Other / Not sure yet</option>
               </select>
               <button type="submit" disabled={sendingTour} className="shrink-0 rounded-xl bg-[#141f49] px-7 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1c2d63] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 sm:col-span-2 lg:col-span-1">
-                {sendingTour ? "Sending…" : heroSection?.cta_label || "Book a Free Tour"}
+                {sendingTour ? "Sending…" : heroText("cta_label", "Book a Free Tour")}
               </button>
               {tourMessage ? <p role="status" className={`sm:col-span-2 lg:col-span-5 text-center text-sm font-medium ${tourMessage.startsWith("Thank") || tourMessage.startsWith("Sending") ? "text-emerald-200" : "text-rose-200"}`}>{tourMessage}</p> : null}
             </form>
@@ -396,16 +432,16 @@ export default function Home() {
       </div>
 
       {/* ── Our Services ── */}
-      <section data-animate className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+      <section data-cms-section="home.services" data-animate className="mx-auto w-full max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div data-fade className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">Workspace Solutions for Every Stage of Your Business</h2>
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{homeServicesText("heading", "Workspace Solutions for Every Stage of Your Business")}</h2>
           <p className="mt-3 text-sm text-slate-500 sm:text-base">
-            From flexible day passes to private offices and managed workspaces, choose a workspace that fits the way you work.
+            {homeServicesText("description", "From flexible day passes to private offices and managed workspaces, choose a workspace that fits the way you work.")}
           </p>
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-6 pb-6 sm:gap-7 md:grid-cols-3 lg:gap-8">
-          {homeServices.map((svc) => (
+          {visibleHomeServices.map((svc) => (
             <Link
               key={svc.title}
               data-fade
@@ -633,7 +669,7 @@ export default function Home() {
       </section>
 
       {/* ── World Class Amenities ── */}
-      <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section data-cms-section="home.amenities" data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
           <h2 className="text-3xl font-bold text-slate-900">World-Class Amenities</h2>
           <p className="mt-3 text-sm text-slate-500">
@@ -642,7 +678,7 @@ export default function Home() {
         </div>
         {/* Mobile / small tablet — stacked cards */}
         <div data-fade className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:hidden">
-          {amenities.map((amenity, i) => (
+          {activeAmenities.map((amenity, i) => (
             <div
               key={amenity.label}
               className="relative overflow-hidden rounded-[1.5rem] p-6 text-white"
@@ -668,7 +704,7 @@ export default function Home() {
 
         {/* Tablet & desktop — horizontal accordion */}
         <div data-fade className="mt-12 hidden h-[440px] gap-3 md:flex">
-          {amenities.map((amenity, i) => {
+          {activeAmenities.map((amenity, i) => {
             const active = i === activeAmenity;
             return (
               <div
@@ -727,21 +763,21 @@ export default function Home() {
       </section>
 
       {/* ── Workspace Plans ── */}
-      <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section data-cms-section="home.pricing" data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
-          <h2 className="text-3xl font-bold text-slate-900">Workspace Plans</h2>
+          <h2 className="text-3xl font-bold text-slate-900">{pricingText("heading", "Workspace Plans")}</h2>
           <p className="mt-3 text-sm text-slate-500">
-            Flexible workspace options designed around the way you work.
+            {pricingText("description", "Flexible workspace options designed around the way you work.")}
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
           {/* Card 1 — New Member */}
           <div data-fade className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">New Member</p>
-            <h3 className="mt-3 text-xl font-bold text-slate-900">Dedicated Desk</h3>
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">{pricingText("one_badge", "New Member")}</p>
+            <h3 className="mt-3 text-xl font-bold text-slate-900">{pricingText("one_title", "Dedicated Desk")}</h3>
             <p className="mt-2 text-sm leading-7 text-slate-500">
-              A reserved workspace designed for professionals who need consistency, productivity, and a dedicated business setup.
+              {pricingText("one_description", "A reserved workspace designed for professionals who need consistency, productivity, and a dedicated business setup.")}
             </p>
             <p className="mt-6 text-sm font-semibold text-slate-600">
               {priceLabel(pricing, "dedicated_desk", "₹7,499 / month")}
@@ -756,7 +792,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Check Availability
+                {pricingText("one_cta", "Check Availability")}
               </Link>
             </div>
           </div>
@@ -766,10 +802,10 @@ export default function Home() {
             <span className="absolute right-6 top-6 rounded-full bg-[#F28C28] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-white">
               Popular
             </span>
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-white/50">Enterprise</p>
-            <h3 className="mt-3 text-xl font-bold text-white">Managed Office</h3>
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-white/50">{pricingText("two_badge", "Enterprise")}</p>
+            <h3 className="mt-3 text-xl font-bold text-white">{pricingText("two_title", "Managed Office")}</h3>
             <p className="mt-2 text-sm leading-7 text-white/70">
-              Custom office solutions for growing enterprises requiring scalable infrastructure and premium business facilities.
+              {pricingText("two_description", "Custom office solutions for growing enterprises requiring scalable infrastructure and premium business facilities.")}
             </p>
             <p className="mt-6 text-sm font-semibold text-white/80">{priceLabel(pricing, "managed_office", "Request a Quote")}</p>
             <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-widest text-white/40">Features</p>
@@ -782,7 +818,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="flex-1 rounded-xl border border-white/20 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-white/10">
-                Request a Quote
+                {pricingText("two_cta", "Request a Quote")}
               </Link>
               {/* <Link href="/contact" className="flex-1 rounded-xl bg-[#F28C28] py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#e07d20]">
                 Request Proposal
@@ -792,10 +828,10 @@ export default function Home() {
 
           {/* Card 3 — Private Cabin */}
           <div data-fade className="flex flex-col rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">Exclusive</p>
-            <h3 className="mt-3 text-xl font-bold text-slate-900">Private Office</h3>
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-slate-400">{pricingText("three_badge", "Exclusive")}</p>
+            <h3 className="mt-3 text-xl font-bold text-slate-900">{pricingText("three_title", "Private Office")}</h3>
             <p className="mt-2 text-sm leading-7 text-slate-500">
-              Premium fully furnished private cabins for startups and teams needing privacy, comfort, and a professional environment.
+              {pricingText("three_description", "Premium fully furnished private cabins for startups and teams needing privacy, comfort, and a professional environment.")}
             </p>
             <p className="mt-6 text-sm font-semibold text-slate-600">
               {priceLabel(pricing, "private_office", "Request Pricing")}
@@ -810,7 +846,7 @@ export default function Home() {
             </ul>
             <div className="mt-8 flex gap-3">
               <Link href="/contact" className="w-full rounded-xl border border-slate-300 py-2.5 text-center text-sm font-semibold text-slate-700 transition hover:border-[#2453f5] hover:text-[#2453f5]">
-                Request Pricing
+                {pricingText("three_cta", "Request Pricing")}
               </Link>
             </div>
           </div>
@@ -819,17 +855,17 @@ export default function Home() {
       </section>
 
       {/* ── Testimonials ── */}
-      {testimonials.length > 0 ? (
-      <section data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      {sectionVisible("testimonials") && activeTestimonials.length > 0 ? (
+      <section data-cms-section="home.testimonials" data-animate className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">What Our Members Say</h2>
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{typeof testimonialsContent.heading === "string" && testimonialsContent.heading.trim() ? testimonialsContent.heading : "What Our Members Say"}</h2>
           <p className="mt-3 text-sm text-slate-500 sm:text-base">
-            Hear from professionals and businesses working from KODESK.
+            {typeof testimonialsContent.description === "string" && testimonialsContent.description.trim() ? testimonialsContent.description : "Hear from professionals and businesses working from KODESK."}
           </p>
         </div>
 
         <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
-          {testimonials.map((t) => (
+          {activeTestimonials.map((t) => (
             <div
               key={t.name}
               data-fade
@@ -866,7 +902,7 @@ export default function Home() {
       ) : null}
 
       {/* ── FAQ ── */}
-      <section data-animate className="mx-auto w-full max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
+      {sectionVisible("faq") && <section data-cms-section="home.faq" data-animate className="mx-auto w-full max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
         <div data-fade className="text-center">
           <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">Frequently Asked Questions</h2>
           <p className="mt-3 text-sm text-slate-500 sm:text-base">
@@ -874,7 +910,7 @@ export default function Home() {
           </p>
         </div>
         <div className="mt-14 space-y-5">
-          {faqs.map((faq, i) => (
+          {activeFaqs.map((faq, i) => (
             <div
               key={i}
               data-fade
@@ -902,7 +938,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section>}
 
       {/* ── Get in Touch ── */}
       <section data-animate className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { MediaRecord, PageSection, PricingRecord, ServicePageDetail, SiteSettings } from "@/lib/cms/types";
+import type { CmsSectionSetting, LocalSeoPage, MediaRecord, PageSection, PricingRecord, PublishedContentDocument, ServicePageDetail, SiteSettings } from "@/lib/cms/types";
 
-type CmsState = { pricing: PricingRecord[]; media: MediaRecord[]; servicePages: ServicePageDetail[]; pageSections: PageSection[]; settings: SiteSettings; loading: boolean };
-const initial: CmsState = { pricing: [], media: [], servicePages: [], pageSections: [], settings: {}, loading: true };
+type CmsState = { pricing: PricingRecord[]; media: MediaRecord[]; servicePages: ServicePageDetail[]; pageSections: PageSection[]; publishedDocuments: PublishedContentDocument[]; localSeoPages: LocalSeoPage[]; sectionSettings: CmsSectionSetting[]; settings: SiteSettings; loading: boolean };
+const initial: CmsState = { pricing: [], media: [], servicePages: [], pageSections: [], publishedDocuments: [], localSeoPages: [], sectionSettings: [], settings: {}, loading: true };
 
 export function usePublicCms() {
   const [state, setState] = useState<CmsState>(initial);

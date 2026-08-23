@@ -61,9 +61,26 @@ const contactFaqs = [
 export default function ContactPage() {
   const [formMessage, setFormMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const { settings } = usePublicCms();
+  const { settings, publishedDocuments, sectionSettings } = usePublicCms();
+  const sectionVisible = (section: string) => sectionSettings.find((item) => item.page_key === "contact" && item.section_key === section)?.is_visible !== false;
   const contact = resolvePublicContact(settings);
   const hours = settings.business_hours?.reception ?? business.receptionHours;
+  const contactHeroDocument = publishedDocuments.find((document) => document.document_key === "contact.hero")?.content;
+  const contactHero = contactHeroDocument && typeof contactHeroDocument === "object" ? contactHeroDocument as Record<string, unknown> : {};
+  const contactHeroText = (key: "eyebrow" | "title" | "primary_label" | "primary_url" | "whatsapp_label", fallback: string) => typeof contactHero[key] === "string" && contactHero[key].trim() ? contactHero[key] : fallback;
+  const contactHeroImage = typeof contactHero.image_url === "string" && contactHero.image_url.trim() ? contactHero.image_url : null;
+  const contactFaqDocument = publishedDocuments.find((document) => document.document_key === "contact.faq")?.content;
+  const cmsContactFaqs = contactFaqDocument && typeof contactFaqDocument === "object" && Array.isArray((contactFaqDocument as { items?: unknown }).items)
+    ? (contactFaqDocument as { items: unknown[] }).items.map((item) => item && typeof item === "object" ? { question: typeof (item as { q?: unknown }).q === "string" ? (item as { q: string }).q.trim() : "", answer: typeof (item as { a?: unknown }).a === "string" ? (item as { a: string }).a.trim() : "" } : null).filter((item): item is { question: string; answer: string } => Boolean(item?.question && item.answer))
+    : [];
+  const visibleContactFaqs = cmsContactFaqs.length ? cmsContactFaqs : contactFaqs;
+  const contactFormDocument = publishedDocuments.find((document) => document.document_key === "contact.form")?.content;
+  const contactForm = contactFormDocument && typeof contactFormDocument === "object" ? contactFormDocument as Record<string, unknown> : {};
+  const contactFormText = (key: "heading" | "name_label" | "phone_label" | "email_label" | "interest_label" | "message_label" | "submit_label", fallback: string) => typeof contactForm[key] === "string" && contactForm[key].trim() ? contactForm[key] : fallback;
+  const contactSupportDocument = publishedDocuments.find((document) => document.document_key === "contact.support")?.content;
+  const contactSupport = contactSupportDocument && typeof contactSupportDocument === "object" ? contactSupportDocument as Record<string, unknown> : {};
+  const contactSupportText = (key: "reasons_title" | "map_url" | "tour_title" | "tour_description" | "tour_primary_label" | "tour_primary_url" | "tour_secondary_label" | "tour_secondary_url", fallback: string) => typeof contactSupport[key] === "string" && contactSupport[key].trim() ? contactSupport[key] : fallback;
+  const visibleReasons = typeof contactSupport.reasons === "string" ? contactSupport.reasons.split("\n").map((item) => item.trim()).filter(Boolean) : reasons;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,31 +99,26 @@ export default function ContactPage() {
 
   return (
     <div>
-      <section className="relative isolate overflow-hidden pt-2">
+      <section data-cms-section="contact.hero" className="relative isolate overflow-hidden pt-2">
         <div className="absolute  inset-0 ">
-          <Image
-            src={heroImage}
-            alt="Kodesk contact background"
-            fill
-            className="object-cover object-center"
-          />
+          {contactHeroImage ? <img src={contactHeroImage} alt="Kodesk contact background" className="h-full w-full object-cover object-center" /> : <Image src={heroImage} alt="Kodesk contact background" fill className="object-cover object-center" />}
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
         <div className="relative mx-auto flex min-h-[calc(100vh-7rem)] w-ful max-w-6xl flex-col items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="w-full  sm:px-12 sm:py-20">
             <p className="text-sm font-medium  text-white text-center sm:text-base lg:text-lg">
-              Get In Touch
+              {contactHeroText("eyebrow", "Get In Touch")}
             </p>
             <h1 className="mt-8 text-4xl font-[var(--font-kodchasan)] font-bold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-tight max-w-9xl w-full text-center">
-              Let&apos;s Find the Right Workspace for You
+              {contactHeroText("title", "Let's Find the Right Workspace for You")}
             </h1>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
               <Link
-                href="/pricing"
+                href={contactHeroText("primary_url", "/pricing")}
                 className="inline-flex items-center justify-center rounded-[12px] bg-[#121E46] border border-white px-12 py-3 text-sm font-semibold text-white transition hover:bg-[#1e40af]"
               >
-                Book a Free Tour
+                {contactHeroText("primary_label", "Book a Free Tour")}
               </Link>
               <a
                 href={contact.whatsappHref}
@@ -114,7 +126,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-[12px] border-2 border-white/50 bg-transparent px-12 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
-                WhatsApp Us
+                {contactHeroText("whatsapp_label", "WhatsApp Us")}
               </a>
             </div>
           </div>
@@ -126,7 +138,7 @@ export default function ContactPage() {
 
       </section>
 
-      <section className="mx-auto w-full max-w-5xl px-12 py-16 sm:px-6 lg:px-12">
+      <section data-cms-section="contact.form" className="mx-auto w-full max-w-5xl px-12 py-16 sm:px-6 lg:px-12">
         <div className="grid gap-8 md:grid-cols-4 ">
           {[...contactCards.slice(0, 1).map((card) => ({ ...card, description: contact.address })), { ...contactCards[1], description: contact.phone }, { ...contactCards[2], description: contact.email }, { ...contactCards[3], description: hours }].map((card) => (
             <article
@@ -153,11 +165,11 @@ export default function ContactPage() {
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-start">
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-10">
-            <p className="text-[25px]  ">Send Us a Message</p>
+            <p className="text-[25px]  ">{contactFormText("heading", "Send Us a Message")}</p>
             <form onSubmit={handleSubmit} className="mt-10 space-y-5">
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Name
+                  {contactFormText("name_label", "Name")}
                 </label>
                 <input
                   type="text"
@@ -169,7 +181,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Phone
+                  {contactFormText("phone_label", "Phone")}
                 </label>
                 <input
                   type="tel"
@@ -182,7 +194,7 @@ export default function ContactPage() {
 
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Email
+                  {contactFormText("email_label", "Email")}
                 </label>
                 <input
                   type="email"
@@ -195,7 +207,7 @@ export default function ContactPage() {
 
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Interested In
+                  {contactFormText("interest_label", "Interested In")}
                 </label>
                 <select name="interest" className="mt-2 w-full rounded-[0.75rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1b2c70] focus:ring-2 focus:ring-[#1b2c70]/10">
                   <option value="">Select a workspace</option>
@@ -209,7 +221,7 @@ export default function ContactPage() {
 
               <div>
                 <label className="text-sm font-medium text-slate-700">
-                  Message
+                  {contactFormText("message_label", "Message")}
                 </label>
                 <textarea
                   name="message"
@@ -224,15 +236,15 @@ export default function ContactPage() {
                 disabled={submitting}
                 className="inline-flex w-full items-center justify-center rounded-[0.75rem] bg-[#1b2c70] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(20,43,119,0.28)] transition hover:bg-[#16245d]"
               >
-                {submitting ? "Sending Enquiry…" : "Send Enquiry"}
+                {submitting ? "Sending Enquiry…" : contactFormText("submit_label", "Send Enquiry")}
               </button>
               {formMessage ? <p role="status" className={`text-center text-sm font-medium ${formMessage.startsWith("Thank") || formMessage.startsWith("Sending") ? "text-green-700" : "text-red-700"}`}>{formMessage}</p> : null}
             </form>
           </div>
 
-          <div className="space-y-6">
+          {sectionVisible("support") && <div className="space-y-6">
             <Link
-              href={business.mapUrl}
+              href={contactSupportText("map_url", business.mapUrl)}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open KODESK Coworking Space in Google Maps"
@@ -246,9 +258,9 @@ export default function ContactPage() {
             </Link>
 
             <div className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
-              <p className="text-[25px] ">Why Choose Kodesk?</p>
+              <p className="text-[25px] ">{contactSupportText("reasons_title", "Why Choose Kodesk?")}</p>
               <ul className="mt-6 space-y-4">
-                {reasons.map((item) => (
+                {visibleReasons.map((item) => (
                   <li key={item} className="flex gap-3">
                     <span>
                       <Image src={keybenefitIcon} alt="Checkmark icon" />
@@ -260,16 +272,16 @@ export default function ContactPage() {
                 ))}
               </ul>
             </div>
-          </div>
+          </div>}
         </div>
 
-        <section className="mt-16">
+        {sectionVisible("faq") && <section data-cms-section="contact.faq" className="mt-16">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-[25px]">Frequently Asked Questions</p>
             <p className="mt-3 text-sm leading-7 text-slate-600">Helpful details about KODESK workspaces and managed office options.</p>
           </div>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
-            {contactFaqs.map((faq) => (
+            {visibleContactFaqs.map((faq) => (
               <details key={faq.question} className="group rounded-[0.9rem] border border-slate-200 bg-white px-6 shadow-[0_10px_30px_rgba(10,16,40,0.06)]">
                 <summary className="cursor-pointer list-none py-5 text-left text-base font-medium text-slate-900 marker:content-none">
                   <span className="flex items-center justify-between gap-4">{faq.question}<span className="text-xl text-[#1b2c70] transition group-open:rotate-45">+</span></span>
@@ -278,10 +290,10 @@ export default function ContactPage() {
               </details>
             ))}
           </div>
-        </section>
+        </section>}
       </section>
 
-      <section className="relative isolate overflow-hidden py-24">
+      <section data-cms-section="contact.support" className="relative isolate overflow-hidden py-24">
         {/* Background Image */}
         <Image
           src={Community}
@@ -293,23 +305,22 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 text-center sm:px-6 lg:px-8 z-10">
-          <p className="text-[25px]  text-white ">Schedule a Tour Today</p>
+          <p className="text-[25px]  text-white ">{contactSupportText("tour_title", "Schedule a Tour Today")}</p>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/75">
-            Schedule a free tour and see the space for yourself.Our team is
-            ready to help you get set up.
+            {contactSupportText("tour_description", "Schedule a free tour and see the space for yourself. Our team is ready to help you get set up.")}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
-              href="/pricing"
+              href={contactSupportText("tour_primary_url", "/pricing")}
               className="inline-flex items-center justify-center rounded-[12px] bg-[#121E46] px-12 py-3 text-sm font-semibold text-white transition hover:bg-[#16245d]"
             >
-              Book a Tour
+              {contactSupportText("tour_primary_label", "Book a Tour")}
             </Link>
             <Link
-              href="/pricing"
+              href={contactSupportText("tour_secondary_url", "/pricing")}
               className="inline-flex items-center justify-center rounded-[12px] border border-blue bg-white px-12 py-3 text-sm font-semibold text-[#103BC9] transition hover:bg-white/15"
             >
-              View Pricing Plans
+              {contactSupportText("tour_secondary_label", "View Pricing Plans")}
             </Link>
           </div>
         </div>

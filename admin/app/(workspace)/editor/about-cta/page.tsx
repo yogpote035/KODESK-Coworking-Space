@@ -1,0 +1,5 @@
+import { FixedSectionEditor } from "../../../../components/admin/FixedSectionEditor";
+
+export default function AboutCtaEditorPage() {
+  return <FixedSectionEditor title="About closing CTA" subtitle="Manage the final About-page invitation without changing the established premium section design." documentKey="about.cta" fields={[{ key: "title", label: "Heading", type: "text", maxLength: 120 }, { key: "description", label: "Description", type: "textarea", maxLength: 320 }, { key: "primary_label", label: "Primary button label", type: "text", maxLength: 50 }, { key: "primary_url", label: "Primary button URL", type: "url" }, { key: "secondary_label", label: "Secondary button label", type: "text", maxLength: 50 }, { key: "secondary_url", label: "Secondary button URL", type: "url" }]} fallback={{ title: "Ready to Find Your Ideal Workspace?", description: "Schedule a free tour and see the space for yourself. Our team is ready to help you get set up.", primary_label: "Book a Tour", primary_url: "/contact", secondary_label: "View Pricing Plans", secondary_url: "/pricing" }} />;
+}

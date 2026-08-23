@@ -41,7 +41,10 @@ const showcaseCards = showcaseOrder.reduce<ShowcaseCard[]>((acc, entry) => {
 }, []);
 
 export default async function ServicesPage() {
-  const { servicePages } = await getPublicCmsData();
+  const { servicePages, publishedDocuments } = await getPublicCmsData();
+  const document = publishedDocuments.find((item) => item.document_key === "services.overview")?.content;
+  const content = document && typeof document === "object" ? document as Record<string, unknown> : {};
+  const text = (key: string, fallback: string) => typeof content[key] === "string" && String(content[key]).trim() ? String(content[key]).trim() : fallback;
 
   const coverImageBySlug = new Map(
     servicePages.map((detail) => [detail.service_slug, detail.cover_image_url]),
@@ -49,7 +52,7 @@ export default async function ServicesPage() {
 
   return (
     <section className="bg-[#faf7f1] px-3 pb-0 pt-0 sm:px-4">
-      <div className="w-full ">
+      <div data-cms-section="services.overview" className="w-full ">
         <div className="overflow-hidden ">
           <div className="relative min-h-[500px] sm:min-h-[560px] lg:min-h-[630px]">
             <Image
@@ -64,13 +67,13 @@ export default async function ServicesPage() {
             <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-white">
               <div className="max-w-4xl">
                 <p className="text-xs font-medium text-white/82 sm:text-sm">
-                  Kodesk Service
+                  {text("eyebrow", "Kodesk Service")}
                 </p>
                 <h1 className="mt-3 text-[2.55rem] font-light tracking-[-0.03em] text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.28)] sm:text-[3.4rem] lg:text-[4.15rem]">
-                  Workspace Solutions for Modern Businesses
+                  {text("title", "Workspace Solutions for Modern Businesses")}
                 </h1>
                 <p className="mx-auto mt-4 max-w-3xl text-[0.95rem] leading-7 text-white/86 drop-shadow-[0_1px_1px_rgba(0,0,0,0.24)] sm:text-[1rem]">
-                  From flexible day passes to private offices and managed workspaces, KODESK provides workspace options designed around different ways of working.
+                  {text("description", "From flexible day passes to private offices and managed workspaces, KODESK provides workspace options designed around different ways of working.")}
                 </p>
               </div>
             </div>
@@ -85,10 +88,10 @@ export default async function ServicesPage() {
 
         <div className="mx-auto mt-14 max-w-3xl text-center sm:mt-16">
           <p className="text-[0.95rem] font-medium tracking-[0.01em] text-[#111a3d] sm:text-[1.05rem]">
-            Our Services
+            {text("section_title", "Our Services")}
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-[0.95rem] leading-8 text-slate-600 sm:text-base">
-            Explore coworking, dedicated desks, private offices, meeting rooms and flexible workspace solutions in Baner, Pune.
+            {text("section_description", "Explore coworking, dedicated desks, private offices, meeting rooms and flexible workspace solutions in Baner, Pune.")}
           </p>
         </div>
 
@@ -131,11 +134,10 @@ export default async function ServicesPage() {
 
           <div className="relative px-6 py-14 text-center text-white sm:px-10 sm:py-20">
             <h2 className="text-2xl font-light tracking-tight sm:text-[2.15rem]">
-              Ready to Find Your Ideal Workspace?
+              {text("cta_title", "Ready to Find Your Ideal Workspace?")}
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-white/84 sm:text-base">
-              Book a free tour and our workspace consultants will help you find
-              the perfect solution for your team.
+              {text("cta_description", "Book a free tour and our workspace consultants will help you find the perfect solution for your team.")}
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -143,13 +145,13 @@ export default async function ServicesPage() {
                 href="/contact"
                 className="rounded-[0.6rem] bg-[#1f2d62] px-8 py-3 text-sm font-medium text-white shadow-[0_10px_18px_rgba(12,18,42,0.2)] transition hover:bg-[#172554]"
               >
-                Book a Tour
+                {text("primary_label", "Book a Tour")}
               </Link>
               <Link
                 href="/pricing"
                 className="rounded-[0.6rem] border border-white/60 bg-white px-8 py-3 text-sm font-medium text-[#1f2d62] shadow-[0_10px_18px_rgba(12,18,42,0.12)] transition hover:bg-white/90"
               >
-                View Pricing Plans
+                {text("secondary_label", "View Pricing Plans")}
               </Link>
             </div>
           </div>
