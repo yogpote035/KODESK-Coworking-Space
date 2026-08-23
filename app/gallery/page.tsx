@@ -125,8 +125,8 @@ export default function GalleryPage() {
               type="button"
               onClick={() => setActiveFilter(filter.value)}
               className={`min-w-[10.5rem] rounded-[0.6rem] border px-6 py-3 text-sm font-medium transition sm:text-[0.98rem] ${activeFilter === filter.value
-                  ? "border-transparent bg-gradient-to-b from-[#263573] to-[#4a63cf] text-white shadow-[0_10px_24px_rgba(38,53,115,0.22)]"
-                  : "border-[#9aa8e1] bg-white text-slate-800 hover:border-[#263573] hover:text-[#263573]"
+                ? "border-transparent bg-gradient-to-b from-[#263573] to-[#4a63cf] text-white shadow-[0_10px_24px_rgba(38,53,115,0.22)]"
+                : "border-[#9aa8e1] bg-white text-slate-800 hover:border-[#263573] hover:text-[#263573]"
                 }`}
             >
               {filterText(filter.value === "meeting-rooms" ? "meeting_rooms" : filter.value === "lounge-areas" ? "lounge_areas" : filter.value, filter.label)}
@@ -137,7 +137,7 @@ export default function GalleryPage() {
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {visibleItems.map((item) => (
             <div
-              key={item.title + Date.now()}
+              key={`${item.title}-${item.category}`}
               className="group relative overflow-hidden rounded-[1.2rem] bg-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.1)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_26px_70px_rgba(15,23,42,0.18)]"
             >
               <div className="relative aspect-[16/11] overflow-hidden bg-slate-100">
