@@ -41,6 +41,13 @@ const contactCards = [
   },
 ];
 
+const locationCards = business.locations.map((location) => ({
+  title: `${location.title} Location`,
+  description: location.address,
+  href: location.mapUrl,
+  icon: visitIcon,
+}));
+
 const reasons = [
   "Prime location in Baner, Pune",
   "High-speed internet",
@@ -132,9 +139,9 @@ export default function ContactPage() {
           </div>
 
         </div>
-                      <div className="relative bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2">
-                <ArcMenu />
-              </div>
+        <div className="relative bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2">
+          <ArcMenu />
+        </div>
 
       </section>
 
@@ -160,6 +167,31 @@ export default function ContactPage() {
                 </p>
               ) : null}
             </article>
+          ))}
+        </div>
+
+        <div className="mt-12 grid gap-8 md:grid-cols-2">
+          {locationCards.map((location) => (
+            <a
+              key={location.title}
+              href={location.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-[1.2rem] border border-slate-200 bg-white p-6 text-left shadow-[0_16px_40px_rgba(15,23,42,0.06)] transition duration-300 ease-out hover:-translate-y-1 hover:border-transparent hover:bg-gradient-to-b hover:from-[#1b2c70] hover:to-[#152055] hover:shadow-[0_30px_60px_rgba(15,23,42,0.18)]"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl transition duration-300 ease-out group-hover:bg-white">
+                <Image src={location.icon} alt={location.title} className="h-6 w-6" />
+              </div>
+              <h3 className="mt-5 text-lg font-semibold text-slate-900 transition duration-300 ease-out group-hover:text-white">
+                {location.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 transition duration-300 ease-out group-hover:text-slate-200">
+                {location.description}
+              </p>
+              <span className="mt-4 inline-flex items-center text-sm font-medium text-[#1b2c70] transition duration-300 ease-out group-hover:text-white">
+                View on Google Maps →
+              </span>
+            </a>
           ))}
         </div>
 
