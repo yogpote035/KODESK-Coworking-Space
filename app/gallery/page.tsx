@@ -59,8 +59,9 @@ export default function GalleryPage() {
   const { media, publishedDocuments } = usePublicCms();
   const galleryHeroDocument = publishedDocuments.find((document) => document.document_key === "gallery.hero")?.content;
   const galleryHero = galleryHeroDocument && typeof galleryHeroDocument === "object" ? galleryHeroDocument as Record<string, unknown> : {};
+  const mediaHero = media.find((item) => item.category === "hero" && item.is_active);
   const galleryHeroText = (key: "eyebrow" | "title" | "description" | "primary_label" | "primary_url" | "secondary_label" | "secondary_url", fallback: string) => typeof galleryHero[key] === "string" && galleryHero[key].trim() ? galleryHero[key] : fallback;
-  const galleryHeroImage = typeof galleryHero.image_url === "string" && galleryHero.image_url.trim() ? galleryHero.image_url : null;
+  const galleryHeroImage = (typeof galleryHero.image_url === "string" && galleryHero.image_url.trim() ? galleryHero.image_url : mediaHero?.public_url ?? null);
   const filterDocument = publishedDocuments.find((document) => document.document_key === "gallery.filters")?.content;
   const filterContent = filterDocument && typeof filterDocument === "object" ? filterDocument as Record<string, unknown> : {};
   const filterText = (key: string, fallback: string) => typeof filterContent[key] === "string" && String(filterContent[key]).trim() ? String(filterContent[key]).trim() : fallback;
